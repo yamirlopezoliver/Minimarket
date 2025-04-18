@@ -21,8 +21,8 @@ namespace Minimarket // Cambia esto a LoginApp si ese es el nombre de tu proyect
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<ProyectoIntegradorContext>(options => 
-            options.UseSqlServer(Configuration.GetConnectionString("ConexionString")));
+            services.AddDbContext<ProyectoIntegradorContext>(options =>
+            options.UseSqlServer(Configuration["ConexionString"]));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
