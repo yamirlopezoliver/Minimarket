@@ -1,8 +1,8 @@
-{
+﻿{
   "dependencies": {
     "mssql1": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:MinimarketContext"
+      "connectionId": "ConexionString:proyectoIntegrador"
     }
   }
 }

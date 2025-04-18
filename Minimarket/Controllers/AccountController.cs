@@ -1,18 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Minimarket.Data;
 using Minimarket.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Minimarket.Controllers
 {
     public class AccountController : Controller
     {
 
-        private readonly ApplicationDbContext _context;
+        private readonly ProyectoIntegradorContext _context;
 
-        public AccountController(ApplicationDbContext context)
+        public AccountController(ProyectoIntegradorContext context)
         {
             _context = context;
         }
@@ -53,18 +54,42 @@ namespace Minimarket.Controllers
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
-            var user = _context.Users.SingleOrDefault(u => u.Username == username && u.Password == password);
+            var user = _context.Users
+                .Include(u => u.Role)
+                    .ThenInclude(r => r.RolePermissions)
+                        .ThenInclude(rp => rp.Permisos)
+                .SingleOrDefault(u => u.Username == username && u.Password == password);
             if (user != null)
             {
-                // Redirigir a Productos/Index si las credenciales son correctas
-                return RedirectToAction("Index", "Productos");
+                HttpContext.Session.SetInt32("UserId", user.Id);
+                HttpContext.Session.SetString("Username", user.Username);
+
+                var permisos = user.Role.RolePermissions.Select(rp => rp.Permisos.Nombre).ToList();
+                HttpContext.Session.SetString("Permisos", string.Join(",", permisos));
+
+                if (permisos.Contains("VerProductos"))
+                {
+                    return RedirectToAction("Index", "Productos");
+                }
+
+                return RedirectToAction("Index", "Home");
             }
             // Mostrar mensaje de error si las credenciales son incorrectas
             ModelState.AddModelError("", "Usuario o contraseña incorrectos.");
             return View();
         }
 
-      
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("UserId");
+            HttpContext.Session.Remove("Username");
+            HttpContext.Session.Remove("Permisos");
+
+            return RedirectToAction("Login", "Account");
+        }
+
 
     }
 }

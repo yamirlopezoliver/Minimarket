@@ -1,4 +1,4 @@
-﻿@model Minimarket.Models.Productos
+﻿@model Minimarket.Models.Producto
 
 @{
     ViewData["Title"] = "Crear Producto";
@@ -100,12 +100,6 @@
                             <label asp-for="FechaIngreso" class="control-label text-dark">Fecha de Ingreso</label>
                             <input asp-for="FechaIngreso" type="date" class="form-control" />
                             <span asp-validation-for="FechaIngreso" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label asp-for="Proveedor" class="control-label text-dark">Proveedor</label>
-                            <input asp-for="Proveedor" class="form-control" />
-                            <span asp-validation-for="Proveedor" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">

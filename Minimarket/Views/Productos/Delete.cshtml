@@ -1,4 +1,4 @@
-﻿@model Minimarket.Models.Productos
+﻿@model Minimarket.Models.Producto
 
 @{
     ViewData["Title"] = "Eliminar Producto";
@@ -89,8 +89,6 @@
                         <dt class="col-sm-4">Fecha de Ingreso</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaIngreso)</dd>
 
-                        <dt class="col-sm-4">Proveedor</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Proveedor)</dd>
                     </dl>
                 </div>
                 <form asp-action="Delete" method="post">

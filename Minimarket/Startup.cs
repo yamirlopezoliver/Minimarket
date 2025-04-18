@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Minimarket.Data;
 using Microsoft.EntityFrameworkCore;
+using Minimarket.Models;
 
 namespace Minimarket // Cambia esto a LoginApp si ese es el nombre de tu proyecto
 {
@@ -19,12 +19,14 @@ namespace Minimarket // Cambia esto a LoginApp si ese es el nombre de tu proyect
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
 
-            services.AddDbContext<MinimarketContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("MinimarketContext")));
+            services.AddDbContext<ProyectoIntegradorContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("ConexionString")));
+            services.AddControllersWithViews();
+
+            services.AddSession();
+            services.AddHttpContextAccessor();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,6 +44,7 @@ namespace Minimarket // Cambia esto a LoginApp si ese es el nombre de tu proyect
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 
