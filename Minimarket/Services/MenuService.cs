@@ -1,14 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Minimarket.Data;
 using Minimarket.Models;
 
 namespace Minimarket.Services
 {
     public class MenuService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ProyectoIntegradorContext _context;
 
-        public MenuService(ApplicationDbContext context)
+        public MenuService(ProyectoIntegradorContext context)
         {
             _context = context;
         }

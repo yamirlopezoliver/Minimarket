@@ -79,7 +79,17 @@ namespace Minimarket.Controllers
             return View();
         }
 
-      
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("UserId");
+            HttpContext.Session.Remove("Username");
+            HttpContext.Session.Remove("Permisos");
+
+            return RedirectToAction("Login", "Account");
+        }
+
 
     }
 }

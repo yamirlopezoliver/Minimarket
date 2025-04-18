@@ -22,15 +22,18 @@ public partial class ProyectoIntegradorContext : DbContext
     public virtual DbSet<Producto> Productos { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<Permission> Permissions { get; set; }
+    public DbSet<RolePermission> RolePermissions { get; set; }
+    public DbSet<NavItem> NavItems { get; set; }
 
-   /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-LNE8K5Q\\SQLEXPRESS; DataBase=proyectoIntegrador; Integrated Security=True; TrustServerCertificate=True");
-   */
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Detalle>(entity =>
         {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Role>().HasKey(r => r.IdRol);
+
             entity.HasKey(e => e.Id).HasName("PK__detalle__3213E83F249120FD");
 
             entity.ToTable("detalle");
@@ -153,7 +156,26 @@ public partial class ProyectoIntegradorContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("username");
+            entity.Property(e => e.IdRol).HasColumnName("idRol");
+            entity.HasOne(u => u.Role)
+                .WithMany(r => r.Users)
+                .HasForeignKey(u => u.IdRol);
+
+
         });
+
+        modelBuilder.Entity<RolePermission>()
+                .HasKey(rp => rp.Id);
+
+        modelBuilder.Entity<RolePermission>()
+            .HasOne(rp => rp.Roles)
+            .WithMany(r => r.RolePermissions)
+            .HasForeignKey(rp => rp.IdRol);
+
+        modelBuilder.Entity<RolePermission>()
+            .HasOne(rp => rp.Permisos)
+            .WithMany(p => p.RolePermissions)
+            .HasForeignKey(rp => rp.IdPermisos);
 
         OnModelCreatingPartial(modelBuilder);
     }
