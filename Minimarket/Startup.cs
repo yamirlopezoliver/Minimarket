@@ -25,6 +25,10 @@ namespace Minimarket // Cambia esto a LoginApp si ese es el nombre de tu proyect
 
             services.AddDbContext<MinimarketContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MinimarketContext")));
+            services.AddControllersWithViews();
+
+            services.AddSession();
+            services.AddHttpContextAccessor();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,6 +46,7 @@ namespace Minimarket // Cambia esto a LoginApp si ese es el nombre de tu proyect
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 

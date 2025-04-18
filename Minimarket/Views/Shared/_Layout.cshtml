@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="~/Minimarket.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @inject Minimarket.Data.ApplicationDbContext _context
+    @{
+        var permisosStr = Context.Session.GetString("Permisos") ?? "";
+        var permisos = permisosStr.Split(",", System.StringSplitOptions.RemoveEmptyEntries);
+        var navItems = _context.NavItems
+        .Where(n => permisos.Contains(n.NombrePermisos))
+        .ToList();
+    }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -20,20 +28,48 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
+                    @{
+                        int? userId = Context.Session.GetInt32("UserId");
+                        string? nombre = Context.Session.GetString("Username"); // opcional
+                    }
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Bienvenidos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Nosotros</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Iniciar sesión</a>
-                        </li>
+                        @* <li class="nav-item"> *@
+                        @*     <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Bienvenidos</a> *@
+                        @* </li> *@
+                        @* <li class="nav-item"> *@
+                        @*     <a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy">Nosotros</a> *@
+                        @* </li> *@
 
+                        @if (userId == null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Iniciar sesión</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Bienvenidos</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-primary">Hola, @nombre</span>
+                            </li>
+                            @foreach (var item in navItems)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="@item.Controller" asp-action="@item.Action">@item.Title</a>
+                                </li>
+                            }
 
-
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-link nav-link text-dark" style="border: none;">Cerrar sesión</button>
+                                </form>
+                            </li>
+                        }
                     </ul>
+
                 </div>
             </div>
         </nav>

@@ -18,9 +18,9 @@ namespace Minimarket.Models
         [DataType(DataType.Password)]
         public string? Password { get; set; }
 
-      
-        
-
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public int IdRol { get; set; }
+        public Role? Role { get; set; }
     }
 }
