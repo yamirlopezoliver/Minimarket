@@ -1,0 +1,134 @@
+﻿@model IEnumerable<Minimarket.Models.Productos>
+
+@{
+    ViewData["Title"] = "Lista de Productos";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #83a4d4, #b6fbff), url('your-background-image-url.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-create {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-create:hover {
+                background-color: #218838;
+            }
+
+        .table {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+            .table th {
+                background-color: #2575fc;
+                color: #fff;
+                text-align: center;
+            }
+
+            .table td {
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            .table a {
+                color: #007bff;
+                text-decoration: none;
+            }
+
+                .table a:hover {
+                    text-decoration: underline;
+                    color: #0056b3;
+                }
+    </style>
+</head>
+<body>
+    <h1>@ViewData["Title"]</h1>
+
+    <form asp-action="Index" method="get" class="form-inline justify-content-center mb-4">
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="searchString" class="sr-only">Nombre</label>
+            <input type="text" name="searchString" class="form-control" placeholder="Nombre" value="@ViewData["CurrentFilter"]" />
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="category" class="sr-only">Categoría</label>
+            <input type="text" name="category" class="form-control" placeholder="Categoría" value="@ViewData["CurrentCategory"]" />
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="startDate" class="mr-2">Desde</label>
+            <input type="date" name="startDate" class="form-control" />
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="endDate" class="mr-2">Hasta</label>
+            <input type="date" name="endDate" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+    </form>
+
+    <p class="text-center">
+        <a asp-action="Create" class="btn-create">Crear Nuevo Producto</a>
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                    <th>@Html.DisplayNameFor(model => model.Categoria)</th>
+                    <th>@Html.DisplayNameFor(model => model.Precio)</th>
+                    <th>@Html.DisplayNameFor(model => model.Stock)</th>
+                    <th>@Html.DisplayNameFor(model => model.FechaIngreso)</th>
+                    <th>@Html.DisplayNameFor(model => model.Proveedor)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Categoria)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Precio)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Stock)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FechaIngreso)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Proveedor)</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="text-success">Editar</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="text-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

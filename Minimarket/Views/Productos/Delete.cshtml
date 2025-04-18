@@ -1,0 +1,105 @@
+﻿@model Minimarket.Models.Productos
+
+@{
+    ViewData["Title"] = "Eliminar Producto";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+
+        h1, h3 {
+            text-align: center;
+            color: #fff;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .alert-danger {
+            padding: 20px;
+            font-size: 18px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-danger, .btn-secondary {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+            }
+
+            .btn-secondary:hover {
+                background-color: #6c757d;
+            }
+
+        dl.row {
+            margin: 0;
+        }
+
+        dt, dd {
+            color: #000;
+        }
+
+        dt {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>@ViewData["Title"]</h1>
+        <h3>¿Está seguro de que desea eliminar este producto?</h3>
+        <hr />
+        <div class="alert alert-danger">
+            <strong>Advertencia!</strong> Esta acción eliminará el producto de forma permanente.
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h4>Detalles del Producto</h4>
+                <div class="details-container">
+                    <dl class="row">
+                        <dt class="col-sm-4">Nombre</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Nombre)</dd>
+
+                        <dt class="col-sm-4">Categoría</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Categoria)</dd>
+
+                        <dt class="col-sm-4">Precio</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Precio)</dd>
+
+                        <dt class="col-sm-4">Stock</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Stock)</dd>
+
+                        <dt class="col-sm-4">Fecha de Ingreso</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaIngreso)</dd>
+
+                        <dt class="col-sm-4">Proveedor</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Proveedor)</dd>
+                    </dl>
+                </div>
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">Eliminar Producto</button>
+                    <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
