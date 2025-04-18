@@ -45,7 +45,10 @@ namespace Minimarket // Cambia esto a LoginApp si ese es el nombre de tu proyect
 
             app.UseRouting();
 
+            app.UseSession();
+
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
