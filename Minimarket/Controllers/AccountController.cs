@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Minimarket.Data;
 using Minimarket.Models;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,9 +9,9 @@ namespace Minimarket.Controllers
     public class AccountController : Controller
     {
 
-        private readonly ApplicationDbContext _context;
+        private readonly ProyectoIntegradorContext _context;
 
-        public AccountController(ApplicationDbContext context)
+        public AccountController(ProyectoIntegradorContext context)
         {
             _context = context;
         }

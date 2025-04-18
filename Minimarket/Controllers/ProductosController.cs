@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Minimarket.Data;
 using Minimarket.Models;
 
 namespace Minimarket.Controllers
 {
     public class ProductosController : Controller
     {
-        private readonly MinimarketContext _context;
+        private readonly ProyectoIntegradorContext _context;
 
-        public ProductosController(MinimarketContext context)
+        public ProductosController(ProyectoIntegradorContext context)
         {
             _context = context;
         }
@@ -77,7 +76,7 @@ namespace Minimarket.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Categoria,Precio,Stock,FechaIngreso,Proveedor")] Productos productos)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Categoria,Precio,Stock,FechaIngreso")] Producto productos)
         {
             if (ModelState.IsValid)
             {
@@ -109,7 +108,7 @@ namespace Minimarket.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Categoria,Precio,Stock,FechaIngreso,Proveedor")] Productos productos)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Categoria,Precio,Stock,FechaIngreso")] Producto productos)
         {
             if (id != productos.Id)
             {

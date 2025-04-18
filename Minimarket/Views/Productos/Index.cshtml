@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Minimarket.Models.Productos>
+﻿@model IEnumerable<Minimarket.Models.Producto>
 
 @{
     ViewData["Title"] = "Lista de Productos";
@@ -106,7 +106,6 @@
                     <th>@Html.DisplayNameFor(model => model.Precio)</th>
                     <th>@Html.DisplayNameFor(model => model.Stock)</th>
                     <th>@Html.DisplayNameFor(model => model.FechaIngreso)</th>
-                    <th>@Html.DisplayNameFor(model => model.Proveedor)</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -119,7 +118,6 @@
                         <td>@Html.DisplayFor(modelItem => item.Precio)</td>
                         <td>@Html.DisplayFor(modelItem => item.Stock)</td>
                         <td>@Html.DisplayFor(modelItem => item.FechaIngreso)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Proveedor)</td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="text-success">Editar</a> |
                             <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
