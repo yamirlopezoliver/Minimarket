@@ -10,7 +10,7 @@ using Minimarket.Models;
 
 namespace Minimarket.Controllers
 {
-    public class ProductosController : Controller
+    public class ProductosController : BaseController
     {
         private readonly ProyectoIntegradorContext _context;
 

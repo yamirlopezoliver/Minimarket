@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Minimarket.Controllers
 {
-    public class MantenimientoController : Controller
+    public class MantenimientoController : BaseController
     {
         private readonly ProyectoIntegradorContext _context;
 

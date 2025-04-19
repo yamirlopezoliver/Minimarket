@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Minimarket.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
 
         private readonly ProyectoIntegradorContext _context;
