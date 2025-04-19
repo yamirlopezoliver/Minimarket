@@ -34,27 +34,13 @@
             animation: fadeIn 0.8s ease-in-out;
         }
 
-        @@keyframes fadeIn {
-            from
-
-        {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        }
     </style>
 </head>
 <body>
     <div class="container mt-5">
 
         <div class="mb-3">
-            <a asp-action="Index" class="btn btn-outline-light" style="background-color: rgba(0,0,0,0.4); border-radius: 30px; padding: 10px 20px;">
+            <a href="javascript:history.back()" class="btn btn-outline-light" style="background-color: rgba(0,0,0,0.4); border-radius: 30px; padding: 10px 20px;">
                 ← Volver al Listado
             </a>
         </div>
@@ -71,7 +57,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4 text-center mb-4 mb-md-0">
-                            <img src="@Url.Content("~/image/" + (Model.Imagen ?? "producto-default.jpg"))"
+                            <img src="@Url.Content("~/image/" + (Model.Imagen ?? "imagen-por-defecto.jpg"))"
                                  alt="Imagen de @Model.Nombre"
                                  class="img-fluid rounded mx-auto d-block mb-3" />
                             <div class="mb-3">
@@ -133,8 +119,8 @@
                     </div>
 
                     <div class="mt-4 d-flex flex-column flex-sm-row justify-content-between gap-2">
-                        <a asp-action="Index"
-                           class="btn btn-outline-secondary flex-fill flex-sm-auto">
+                        <a href="javascript:history.back()"
+                             class="btn btn-outline-secondary flex-fill flex-sm-auto">
                             Cancelar
                         </a>
                         <button type="submit"
