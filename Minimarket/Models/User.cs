@@ -22,6 +22,8 @@ public partial class User
     public string? Username { get; set; }
 
     public DateTime? CreatedAt { get; set; }
+    public int IdRol { get; set; }
+    public Role? Role { get; set; }
 
     public virtual ICollection<Ordene> Ordenes { get; set; } = new List<Ordene>();
 

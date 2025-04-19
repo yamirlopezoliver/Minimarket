@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Minimarket.Models.Detalle>;
+
+@{
+
+}
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb il-flex il-flex-wrap il-items-center il-gap-1.5 il-break-words il-text-sm il-text-muted-foreground sm:il-gap-2.5">
+        <li class="il-inline-flex il-items-center il-gap-1.5"><a asp-action="Index">Home</a></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5">></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5 breadcrumb-item active"><a>Carrito</a></li>
+    </ol>
+</nav>
+
+<div class="card mb-2">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-9">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio($)</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model){
+                            <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Producto.Nombre)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Precio)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Cantidad)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                            <td>
+                                    <a asp-action="DeleteCart" asp-route-id="@item.Producto?.Id" class="btn btn-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card col-lg-3 mb-0">
+                <h2 class="card-title text-center">SUB TOTAL</h2>
+                <ul class="card-body list-group">
+                    <li>
+                       <h5 class="text-end">$ @ViewBag.Total</h5>
+                    </li>
+                </ul>
+                @if (User.IsInRole("admin"))
+                {
+                    <p>Eres Admin</p>
+                }
+                else
+                {
+                    <div class="card-footer ">
+                        <a class="btn btn-primary mb-0" asp-action="OrdenResumen">Ver Orden</a>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+ a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+</style>
