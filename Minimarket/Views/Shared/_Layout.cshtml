@@ -33,16 +33,20 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     @{
                         int? userId = Context.Session.GetInt32("UserId");
+                        int? userIdRol = Context.Session.GetInt32("UserIdRol");
                         string? nombre = Context.Session.GetString("Username");
                     }
                     <ul class="navbar-nav flex-grow-1">
-                        @if (userId == null)
+                        @if (userIdRol == 0)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Iniciar sesión</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Bienvenidos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Nosotros</a>
                             </li>
                         }
                         else
@@ -63,7 +67,7 @@
                             <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <button type="submit" class="btn btn-link nav-link text-dark"
-                                        style="border: none; background-color: #007bff; color: white; border-radius: 20px; padding: 8px 20px; font-size: 16px; transition: background-color 0.3s, transform 0.3s;">
+                                        style="border: none; background-color: #007bff; color: white !important; border-radius: 20px; padding: 8px 20px; font-size: 16px; transition: background-color 0.3s, transform 0.3s;">
                                     Cerrar sesión
                                 </button>
                             </form>

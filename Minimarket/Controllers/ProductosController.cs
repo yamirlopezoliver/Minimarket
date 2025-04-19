@@ -155,6 +155,14 @@ namespace Minimarket.Controllers
 
                     producto.Imagen = nombreArchivo;
                 }
+                else if (producto.Imagen == null)
+                {
+                    var productoExistente = await _context.Productos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+                    if (productoExistente != null)
+                    {
+                        producto.Imagen = productoExistente.Imagen;
+                    }
+                }
 
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (userId != null)

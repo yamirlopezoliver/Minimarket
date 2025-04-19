@@ -26,27 +26,12 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             animation: fadeIn 0.8s ease-in-out;
         }
-
-        @@keyframes slideIn {
-            from
-
-        {
-            transform: translateY(-50px);
-            opacity: 0;
-        }
-
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        }
     </style>
 </head>
 <body>
     <div class="container mt-5">
         <div class="mb-3">
-            <a asp-controller="Mantenimiento" asp-action="Index" class="btn btn-outline-light" style="background-color: rgba(0,0,0,0.4); border-radius: 30px; padding: 10px 20px;">
+            <a href="javascript:history.back()" class="btn btn-outline-light" style="background-color: rgba(0,0,0,0.4); border-radius: 30px; padding: 10px 20px;">
                 ← Volver al Listado
             </a>
         </div>
@@ -61,7 +46,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4 text-center mb-4 mb-md-0">
-                            <img src="@Url.Content("~/image/producto-default.jpg")"
+                            <img src="@Url.Content("~/image/imagen-por-defecto.jpg")"
                                  alt="Imagen del producto"
                                  class="img-fluid rounded mx-auto d-block mb-3" />
                             <div class="mb-3">

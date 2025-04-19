@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Minimarket.Models;
 
-namespace Minimarket // Cambia esto a LoginApp si ese es el nombre de tu proyecto
+namespace Minimarket
 {
     public class Startup
     {

@@ -62,7 +62,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body text-center">
-                <img id="modalImage" src="" class="img-fluid" alt="Imagen del producto" />
+                <img id="modalImage" src="@Url.Content("~/image/imagen-por-defecto.jpg")" onerror="this.src='@Url.Content("~/image/imagen-por-defecto.jpg")'" class="img-fluid" alt="Imagen del producto" />
             </div>
         </div>
     </div>
