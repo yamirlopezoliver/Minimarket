@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Minimarket.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
 
         private readonly ProyectoIntegradorContext _context;
@@ -59,12 +59,14 @@ namespace Minimarket.Controllers
                     .ThenInclude(r => r.RolePermissions)
                         .ThenInclude(rp => rp.Permisos)
                 .SingleOrDefault(u => u.Username == username && u.Password == password);
-            if (user != null)
+            if (user != null && !string.IsNullOrEmpty(user.Username))
             {
+                int userRole = user.IdRol == 0 ? 0 : user.IdRol;
                 HttpContext.Session.SetInt32("UserId", user.Id);
+                HttpContext.Session.SetInt32("UserIdRol", user.IdRol);
                 HttpContext.Session.SetString("Username", user.Username);
 
-                var permisos = user.Role.RolePermissions.Select(rp => rp.Permisos.Nombre).ToList();
+                var permisos = user.Role?.RolePermissions.Select(rp => rp.Permisos.Nombre).ToList();
                 HttpContext.Session.SetString("Permisos", string.Join(",", permisos));
 
                 if (permisos.Contains("VerProductos"))
