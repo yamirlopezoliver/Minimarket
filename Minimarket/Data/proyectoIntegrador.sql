@@ -98,9 +98,30 @@ VALUES
 
 INSERT INTO [dbo].[user] (direccion, email, nombre, password, telefono, tipo, username, createdAt, IdRol)
 VALUES
-('Av. Los Olivos 123', 'a@b.com','Juan Pérez','123','987654321','admin','asd',GETDATE(),1),
-('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321','client','julio',GETDATE(),2),
-('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321','client','pepe',GETDATE(),0);
+('Av. Los Olivos 123', 'a@b.com','Juan Pérez','123','987654321', 'admin', 'asd',GETDATE(),1),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'julio',GETDATE(),2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'sin rol', 'pepe',GETDATE(),0),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'admin', 'juanp', GETDATE(), 1),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'marial', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'carlosr', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'anatorres', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'admin', 'luisv', GETDATE(), 1),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'luciap', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'pedrog', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'admin', 'andreas', GETDATE(), 1),
+('Jr. Sur 45', 'a9@b.com', 'Diego Ríos', '123', '987654329', 'client', 'diegor', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'karlam', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'oscarl', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'admin', 'sandraf', GETDATE(), 1),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'jorget', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'carmend', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'admin', 'raulh', GETDATE(), 1),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'elenar', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'tomasn', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'client', 'brendaq', GETDATE(), 2),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'admin', 'manuelc', GETDATE(), 1),
+('Av. Los Olivos 123','a@c.com', 'Juan Pérez','123','987654321', 'sin rol', 'estefz', GETDATE(), 0);
+
 
 INSERT INTO [dbo].[productos] (stock, categoria, descripcion, imagen, nombre, precio, fechaIngreso, usuario_id)
 VALUES
