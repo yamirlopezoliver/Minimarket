@@ -47,7 +47,7 @@
                 dibujarGrafico();
             });
         }
-
+        let currentChart = null;
         function dibujarGrafico() {
             const canvas = document.querySelector("canvas[id$='Chart']");
             if (!canvas) return;
@@ -57,7 +57,10 @@
             const data = JSON.parse(canvas.dataset.counts);
 
             const ctx = canvas.getContext('2d');
-            new Chart(ctx, {
+            if (currentChart !== null) {
+                currentChart.destroy();
+            }
+            currentChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: labels,

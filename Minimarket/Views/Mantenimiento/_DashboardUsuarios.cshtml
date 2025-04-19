@@ -43,37 +43,3 @@
         </canvas>
     </div>
 </div>
-
-
-<script>
-    const labels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(labels));
-    const data   = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(counts));
-
-    const ctx = document.getElementById('usuariosChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Usuarios por Rol',
-                data: data,
-                backgroundColor: ['#007bff', '#28a745', '#ffc107'],
-                borderColor:   ['#0056b3', '#1e7e34', '#d39e00'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
-            },
-            plugins: {
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: 'Distribución de Usuarios por Rol'
-                }
-            }
-        }
-    });
-</script>

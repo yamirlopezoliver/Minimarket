@@ -34,7 +34,11 @@ namespace Minimarket.Controllers
                     Email = model.Email,
                     Username = model.Username,
                     Password = model.Password,
-                    CreatedAt = DateTime.Now
+                    CreatedAt = DateTime.Now,
+                    Tipo = "sin rol",
+                    Direccion = model.Direccion,
+                    Telefono = model.Telefono,
+                    Nombre = model.Nombre
                 };
 
                 _context.Add(user);
