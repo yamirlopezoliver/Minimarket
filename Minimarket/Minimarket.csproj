@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Views\Admin\" />
   </ItemGroup>
 
   <ItemGroup>

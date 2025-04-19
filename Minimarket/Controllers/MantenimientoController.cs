@@ -16,10 +16,20 @@ namespace Minimarket.Controllers
 
         public async Task<IActionResult> Index()
         {
+            return View();
+        }
+
+        public async Task<IActionResult> Productos()
+        {
             var productos = await _context.Productos
                 .Include(p => p.Usuario)
                 .ToListAsync();
             return View(productos);
+        }
+
+        public async Task<IActionResult> Usuarios()
+        {
+            return View();
         }
     }
 }
