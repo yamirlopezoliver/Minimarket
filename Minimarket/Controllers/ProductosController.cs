@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -76,16 +77,38 @@ namespace Minimarket.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Categoria,Precio,Stock,FechaIngreso")] Producto productos)
+        public async Task<IActionResult> Create(Producto producto)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(productos);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId != null)
+                    producto.UsuarioId = int.Parse(userId);
+
+                if (producto.ImagenFile != null && producto.ImagenFile.Length > 0)
+                {
+                    string carpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/image");
+                    if (!Directory.Exists(carpeta))
+                        Directory.CreateDirectory(carpeta);
+                    string nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(producto.ImagenFile.FileName);
+                    string ruta = Path.Combine(carpeta, nombreArchivo);
+
+                    using (var stream = new FileStream(ruta, FileMode.Create))
+                    {
+                        await producto.ImagenFile.CopyToAsync(stream);
+                    }
+
+                    producto.Imagen = nombreArchivo;
+                }
+
+                _context.Add(producto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(productos);
+
+            return View(producto);
         }
+
 
         // GET: Productos/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -108,35 +131,44 @@ namespace Minimarket.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Categoria,Precio,Stock,FechaIngreso")] Producto productos)
+        public async Task<IActionResult> Edit(int id, Producto producto)
         {
-            if (id != productos.Id)
+            if (id != producto.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                if (producto.ImagenFile != null && producto.ImagenFile.Length > 0)
                 {
-                    _context.Update(productos);
-                    await _context.SaveChangesAsync();
+                    string carpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/image");
+                    if (!Directory.Exists(carpeta))
+                        Directory.CreateDirectory(carpeta);
+                    string nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(producto.ImagenFile.FileName);
+                    string ruta = Path.Combine(carpeta, nombreArchivo);
+
+                    using (var stream = new FileStream(ruta, FileMode.Create))
+                    {
+                        await producto.ImagenFile.CopyToAsync(stream);
+                    }
+
+                    producto.Imagen = nombreArchivo;
                 }
-                catch (DbUpdateConcurrencyException)
+
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId != null)
                 {
-                    if (!ProductosExists(productos.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    producto.UsuarioId = int.Parse(userId);
                 }
+
+                _context.Update(producto);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(productos);
+            return View(producto);
         }
+
 
         // GET: Productos/Delete/5
         public async Task<IActionResult> Delete(int? id)
