@@ -60,6 +60,12 @@
                                     <a class="nav-link text-dark" asp-controller="@item.Controller" asp-action="@item.Action">@item.Title</a>
                                 </li>
                             }
+                            <li class="nav-item">
+                                <a class="nav-link active" href="@Url.Action("Carrito","Home")">
+                                    <i class="fas fa-cart-plus">(<label style="color: darkorange">@(ViewBag.CarritoCount ?? 0)</label>)</i>
+                                    Carrito
+                                </a>
+                            </li>
                         }
                     </ul>
                     <ul class="navbar-nav">

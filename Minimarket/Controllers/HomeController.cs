@@ -4,13 +4,18 @@ using Minimarket.Models;
 
 namespace Minimarket.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ProyectoIntegradorContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public static List<Detalle> detalles = new List<Detalle>();
+        static double sumaTotal = 0.0;
+
+        public HomeController(ILogger<HomeController> logger, ProyectoIntegradorContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -22,6 +27,16 @@ namespace Minimarket.Controllers
         {
             return View();
         }
+
+        public IActionResult Carrito()
+        {
+
+            ViewBag.CarritoCount = detalles.Count;
+            ViewBag.Total = sumaTotal;
+            return View(detalles);
+        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
