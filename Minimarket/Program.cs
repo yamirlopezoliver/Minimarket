@@ -57,13 +57,21 @@ namespace LoginApp
             var script = File.ReadAllText(scriptPath);
             Console.WriteLine("Script leído correctamente.");
 
-            using (var connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                var command = new SqlCommand(script, connection);
-                command.ExecuteNonQuery();
-                Console.WriteLine("Script ejecutado exitosamente.");
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    var command = new SqlCommand(script, connection);
+                    command.ExecuteNonQuery();
+                    Console.WriteLine("Script ejecutado correctamente.");
+                }
             }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+
         }
 
 

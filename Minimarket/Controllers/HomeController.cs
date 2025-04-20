@@ -39,6 +39,11 @@ namespace Minimarket.Controllers
         [HttpPost]
         public async Task<IActionResult> Carrito(int id, int cantidad)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var producto = await _context.Productos.FindAsync(id);
             if (producto == null)
             {
@@ -70,6 +75,11 @@ namespace Minimarket.Controllers
 
         public IActionResult DeleteCart(int id)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             List<Detalle> detallesNueva = new List<Detalle>();
             foreach (var item in detalles)
             {
@@ -92,6 +102,11 @@ namespace Minimarket.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

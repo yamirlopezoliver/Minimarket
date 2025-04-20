@@ -82,19 +82,21 @@ CREATE TABLE [dbo].[NavItems](
     Title VARCHAR(100) NULL,
     Controller VARCHAR(50) NULL,
     Action VARCHAR(50) NULL,
-    NombrePermisos VARCHAR(50) NULL
+    NombrePermisos VARCHAR(50) NULL,
+    Icono VARCHAR(255) NULL,
+    Estilo VARCHAR(255) NULL   
 );
 
 INSERT INTO Roles (IdRol, Nombre) VALUES (0, 'Sin Rol'), (1,'Admin'), (2,'Cliente');
-INSERT INTO Permissions (Nombre) VALUES ('ManageUsers'), ('ViewSales'), ('VerProductos'), ('VerMantenimiento');
-INSERT INTO RolePermissions (IdRol, IdPermisos) VALUES (1, 1), (1, 2), (2, 2), (1, 3), (2, 3), (1, 4);
+INSERT INTO Permissions (Nombre) VALUES ('ManageUsers'), ('ViewSales'), ('VerProductos'), ('VerMantenimiento'), ('VerCarrito');
+INSERT INTO RolePermissions (IdRol, IdPermisos) VALUES (1, 1), (1, 2), (2, 2), (1, 3), (2, 3), (1, 4), (1, 5), (2, 5);
 
-INSERT INTO NavItems (Title, Controller, Action, NombrePermisos)
-VALUES
-('Panel Admin', 'Admin', 'Index', 'ManageUsers'),
-('Ventas', 'Ventas', 'Index', 'ViewSales'),
-('Productos', 'Productos', 'Index', 'VerProductos'),
-('Mantenimiento', 'Mantenimiento', 'Index', 'VerMantenimiento');
+INSERT INTO NavItems (Title, Controller, Action, NombrePermisos, Icono, Estilo) VALUES
+('Panel Admin', 'Admin', 'Index', 'ManageUsers', 'fas fa-tachometer-alt', 'nav-link text-dark'),
+('Ventas', 'Ventas', 'Index', 'ViewSales', 'fas fa-chart-line', 'nav-link text-dark'),
+('Productos', 'Productos', 'Index', 'VerProductos', 'fas fa-cogs', 'nav-link text-dark'),
+('Mantenimiento', 'Mantenimiento', 'Index', 'VerMantenimiento', 'fas fa-wrench', 'nav-link text-dark'),
+('Carrito', 'Home', 'Carrito', 'VerCarrito', 'fas fa-cart-plus', 'nav-link active');
 
 INSERT INTO [dbo].[user] (direccion, email, nombre, password, telefono, tipo, username, createdAt, IdRol)
 VALUES

@@ -39,7 +39,7 @@
                         string? nombre = Context.Session.GetString("Username");
                     }
                     <ul class="navbar-nav flex-grow-1">
-                        @if (userIdRol == 0)
+                        @if (userIdRol == 0 || userId == null)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Iniciar sesión</a>
@@ -59,28 +59,40 @@
                             @foreach (var item in navItems)
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="@item.Controller" asp-action="@item.Action">@item.Title</a>
+                                    <a class="@item.Estilo ?? " nav-link text-dark"" asp-controller="@item.Controller" asp-action="@item.Action">
+                                        @if (!string.IsNullOrEmpty(item.Icono))
+                                        {
+                                            <i class="@item.Icono">
+                                                @if (item.Title == "Carrito" && ViewBag.CarritoCount != null)
+                                                {
+                                                    @: (<label style="color: darkorange">@ViewBag.CarritoCount</label>)
+                                                }
+                                            </i>
+                                        }
+                                        @item.Title
+                                    </a>
                                 </li>
                             }
-                            <li class="nav-item">
-                                <a class="nav-link active" href="@Url.Action("Carrito","Home")">
-                                    <i class="fas fa-cart-plus">(<label style="color: darkorange">@(ViewBag.CarritoCount ?? 0)</label>)</i>
-                                    Carrito
-                                </a>
-                            </li>
+
+
+
                         }
                     </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-link nav-link text-dark"
-                                        style="border: none; background-color: #007bff; color: white !important; border-radius: 20px; padding: 8px 20px; font-size: 16px; transition: background-color 0.3s, transform 0.3s;">
-                                    Cerrar sesión
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
+                    @if (userId != null)
+                    {
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-link nav-link text-dark"
+                                            style="border: none; background-color: #007bff; color: white !important; border-radius: 20px; padding: 8px 20px; font-size: 16px; transition: background-color 0.3s, transform 0.3s;">
+                                        Cerrar sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    }
+
 
                 </div>
             </div>

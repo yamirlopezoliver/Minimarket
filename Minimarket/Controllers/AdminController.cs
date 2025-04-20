@@ -15,6 +15,11 @@ namespace Minimarket.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             ViewBag.TotalUsuarios = await _context.Users.CountAsync();
             ViewBag.TotalProductos = await _context.Productos.CountAsync();
             ViewBag.TotalOrdenes = await _context.Ordenes.CountAsync();
