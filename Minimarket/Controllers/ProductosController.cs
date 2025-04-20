@@ -22,6 +22,11 @@ namespace Minimarket.Controllers
         // GET: Productos
         public async Task<IActionResult> Index(string searchString, string category, DateTime? startDate, DateTime? endDate)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var productos = from p in _context.Productos
                             select p;
 
@@ -51,6 +56,11 @@ namespace Minimarket.Controllers
         // GET: Productos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -69,6 +79,11 @@ namespace Minimarket.Controllers
         // GET: Productos/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             return View();
         }
 
@@ -79,6 +94,11 @@ namespace Minimarket.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Producto producto)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (ModelState.IsValid)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -113,6 +133,11 @@ namespace Minimarket.Controllers
         // GET: Productos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -133,6 +158,11 @@ namespace Minimarket.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Producto producto)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (id != producto.Id)
             {
                 return NotFound();
@@ -181,6 +211,11 @@ namespace Minimarket.Controllers
         // GET: Productos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -201,6 +236,11 @@ namespace Minimarket.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var productos = await _context.Productos.FindAsync(id);
             if (productos != null)
             {
