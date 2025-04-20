@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Dashboard de Usuarios";
+
+    // 1) Leer y castear desde ViewBag a listas tipadas
+    var totalUsuarios = (int)(ViewBag.TotalUsuarios ?? 0);
+    var labels = (ViewBag.RolesLabels as List<string>) ?? new List<string>();
+    var counts = (ViewBag.RolesCounts as List<int>) ?? new List<int>();
+}
+
+<h4 class="mb-3">Dashboard de Usuarios</h4>
+
+<div class="row mb-4">
+    <!-- Total Usuarios -->
+    <div class="col-md-3">
+        <div class="card bg-primary text-white text-center">
+            <div class="card-body">
+                <h5>Total Usuarios</h5>
+                <p class="display-6">@totalUsuarios</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjetas resumen por Rol -->
+    @for (int i = 0; i < labels.Count; i++)
+    {
+        <div class="col-md-3">
+            <div class="card bg-light mb-3 text-center">
+                <div class="card-body">
+                    <h6>@labels[i]</h6>
+                    <p class="display-6">@counts[i]</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="text-center">
+    <div style="width: 400px; height: 400px; margin: auto;">
+        <canvas id="usuariosChart"
+                data-labels='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(labels))'
+                data-counts='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(counts))'
+                data-tipo="usuarios">
+        </canvas>
+    </div>
+</div>

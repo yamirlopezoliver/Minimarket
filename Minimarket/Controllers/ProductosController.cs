@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,7 +10,7 @@ using Minimarket.Models;
 
 namespace Minimarket.Controllers
 {
-    public class ProductosController : Controller
+    public class ProductosController : BaseController
     {
         private readonly ProyectoIntegradorContext _context;
 
@@ -21,6 +22,11 @@ namespace Minimarket.Controllers
         // GET: Productos
         public async Task<IActionResult> Index(string searchString, string category, DateTime? startDate, DateTime? endDate)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var productos = from p in _context.Productos
                             select p;
 
@@ -50,6 +56,11 @@ namespace Minimarket.Controllers
         // GET: Productos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -68,6 +79,11 @@ namespace Minimarket.Controllers
         // GET: Productos/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             return View();
         }
 
@@ -76,20 +92,52 @@ namespace Minimarket.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Categoria,Precio,Stock,FechaIngreso")] Producto productos)
+        public async Task<IActionResult> Create(Producto producto)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (ModelState.IsValid)
             {
-                _context.Add(productos);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId != null)
+                    producto.UsuarioId = int.Parse(userId);
+
+                if (producto.ImagenFile != null && producto.ImagenFile.Length > 0)
+                {
+                    string carpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/image");
+                    if (!Directory.Exists(carpeta))
+                        Directory.CreateDirectory(carpeta);
+                    string nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(producto.ImagenFile.FileName);
+                    string ruta = Path.Combine(carpeta, nombreArchivo);
+
+                    using (var stream = new FileStream(ruta, FileMode.Create))
+                    {
+                        await producto.ImagenFile.CopyToAsync(stream);
+                    }
+
+                    producto.Imagen = nombreArchivo;
+                }
+
+                _context.Add(producto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(productos);
+
+            return View(producto);
         }
+
 
         // GET: Productos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -108,39 +156,66 @@ namespace Minimarket.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Categoria,Precio,Stock,FechaIngreso")] Producto productos)
+        public async Task<IActionResult> Edit(int id, Producto producto)
         {
-            if (id != productos.Id)
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (id != producto.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                if (producto.ImagenFile != null && producto.ImagenFile.Length > 0)
                 {
-                    _context.Update(productos);
-                    await _context.SaveChangesAsync();
+                    string carpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/image");
+                    if (!Directory.Exists(carpeta))
+                        Directory.CreateDirectory(carpeta);
+                    string nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(producto.ImagenFile.FileName);
+                    string ruta = Path.Combine(carpeta, nombreArchivo);
+
+                    using (var stream = new FileStream(ruta, FileMode.Create))
+                    {
+                        await producto.ImagenFile.CopyToAsync(stream);
+                    }
+
+                    producto.Imagen = nombreArchivo;
                 }
-                catch (DbUpdateConcurrencyException)
+                else if (producto.Imagen == null)
                 {
-                    if (!ProductosExists(productos.Id))
+                    var productoExistente = await _context.Productos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+                    if (productoExistente != null)
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        producto.Imagen = productoExistente.Imagen;
                     }
                 }
+
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId != null)
+                {
+                    producto.UsuarioId = int.Parse(userId);
+                }
+
+                _context.Update(producto);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(productos);
+            return View(producto);
         }
+
 
         // GET: Productos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -161,6 +236,11 @@ namespace Minimarket.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var productos = await _context.Productos.FindAsync(id);
             if (productos != null)
             {

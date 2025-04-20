@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "Dashboard de Administración";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card bg-info text-white mb-3">
+            <div class="card-header">Usuarios</div>
+            <div class="card-body">
+                <h5 class="card-title">Administrar usuarios</h5>
+                <button class="btn btn-light" onclick="cargarDashboard('Usuarios')">Ver</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-warning text-white mb-3">
+            <div class="card-header">Productos</div>
+            <div class="card-body">
+                <h5 class="card-title">Inventario de productos</h5>
+                <button class="btn btn-light" onclick="cargarDashboard('Productos')">Ver</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-success text-white mb-3">
+            <div class="card-header">Órdenes</div>
+            <div class="card-body">
+                <h5 class="card-title">Total de órdenes registradas</h5>
+                <button class="btn btn-light" onclick="cargarDashboard('Ordenes')">Ver</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div id="seccionDashboard"></div>
+
+@section Scripts {
+    <script>
+        function cargarDashboard(tipo) {
+            $("#seccionDashboard").load('/Mantenimiento/Dashboard' + tipo, function () {
+                dibujarGrafico();
+            });
+        }
+        let currentChart = null;
+        function dibujarGrafico() {
+            const canvas = document.querySelector("canvas[id$='Chart']");
+            if (!canvas) return;
+
+            const tipo = canvas.dataset.tipo;
+            const labels = JSON.parse(canvas.dataset.labels);
+            const data = JSON.parse(canvas.dataset.counts);
+
+            const ctx = canvas.getContext('2d');
+            if (currentChart !== null) {
+                currentChart.destroy();
+            }
+            currentChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `Distribución de ${tipo}`,
+                        data: data,
+                        backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545'],
+                        borderColor: ['#0056b3', '#1e7e34', '#d39e00', '#bd2130'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true },
+                        title: {
+                            display: true,
+                            text: `Distribución de ${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+}
