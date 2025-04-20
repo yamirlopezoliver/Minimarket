@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Minimarket.Models;
 
@@ -15,9 +14,6 @@ public partial class Producto
     public string? Descripcion { get; set; }
 
     public string? Imagen { get; set; }
-
-    [NotMapped]
-    public IFormFile? ImagenFile { get; set; }
 
     public string? Nombre { get; set; }
 

@@ -1,5 +1,4 @@
 ﻿@model Minimarket.Models.Producto
-@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Eliminar Producto";
@@ -8,113 +7,97 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background: linear-gradient(to right, #c2e9fb, #a1c4fd);
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
             color: #fff;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
         }
 
         h1, h3 {
             text-align: center;
             color: #fff;
-            text-shadow: 1px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .details-card {
-            background-color: rgba(255,255,255,0.95);
-            border-radius: .75rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            padding: 2rem;
-        }
-
-        .product-image {
-            max-height: 250px;
-            object-fit: cover;
-            border-radius: 10px;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .alert-danger {
-            padding: 1rem;
+            padding: 20px;
+            font-size: 18px;
             text-align: center;
-            font-size: 1.1rem;
-            border-radius: .5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-danger, .btn-secondary {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+            }
+
+            .btn-secondary:hover {
+                background-color: #6c757d;
+            }
+
+        dl.row {
+            margin: 0;
         }
 
         dt, dd {
             color: #000;
         }
 
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
-
-        .btn-secondary:hover {
-            background-color: #6c757d;
+        dt {
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container mt-5">
-
-        <div class="mb-4 text-center">
-            <h1>@ViewData["Title"]</h1>
-            <h3>¿Está seguro de que desea eliminar este producto?</h3>
+        <h1>@ViewData["Title"]</h1>
+        <h3>¿Está seguro de que desea eliminar este producto?</h3>
+        <hr />
+        <div class="alert alert-danger">
+            <strong>Advertencia!</strong> Esta acción eliminará el producto de forma permanente.
         </div>
-
-        <div class="card details-card">
-            <div class="alert alert-danger">
-                <strong>¡Advertencia!</strong> Esta acción eliminará el producto de forma permanente.
-            </div>
-
-            <div class="row">
-                <div class="col-md-4 text-center mb-4 mb-md-0">
-                    <img src="@Url.Content("~/image/" + (Model.Imagen ?? "imagen-por-defecto.jpg"))"
-                         alt="Imagen de @Model.Nombre"
-                         class="img-fluid product-image mx-auto d-block" />
-                </div>
-                <div class="col-md-8">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h4>Detalles del Producto</h4>
+                <div class="details-container">
                     <dl class="row">
                         <dt class="col-sm-4">Nombre</dt>
-                        <dd class="col-sm-8">@Model.Nombre</dd>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Nombre)</dd>
 
                         <dt class="col-sm-4">Categoría</dt>
-                        <dd class="col-sm-8">@Model.Categoria</dd>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Categoria)</dd>
 
                         <dt class="col-sm-4">Precio</dt>
-                        <dd class="col-sm-8">$@Model.Precio?.ToString("N2")</dd>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Precio)</dd>
 
                         <dt class="col-sm-4">Stock</dt>
-                        <dd class="col-sm-8">@Model.Stock</dd>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Stock)</dd>
 
                         <dt class="col-sm-4">Fecha de Ingreso</dt>
-                        <dd class="col-sm-8">@Model.FechaIngreso?.ToString("dd/MM/yyyy")</dd>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaIngreso)</dd>
+
                     </dl>
                 </div>
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">Eliminar Producto</button>
+                    <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
+                </form>
             </div>
-
-            <form asp-action="Delete" method="post" class="mt-4">
-                <input type="hidden" asp-for="Id" />
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button type="submit" class="btn btn-danger me-md-2">
-                        <i class="bi bi-trash3"></i> Eliminar Producto
-                    </button>
-                    <a href="javascript:history.back()" class="btn btn-secondary">
-                        <i class="bi bi-arrow-left"></i> Volver al Listado
-                    </a>
-                </div>
-            </form>
         </div>
-
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

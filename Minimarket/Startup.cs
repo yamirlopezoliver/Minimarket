@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Minimarket.Models;
 
-namespace Minimarket
+namespace Minimarket // Cambia esto a LoginApp si ese es el nombre de tu proyecto
 {
     public class Startup
     {
@@ -44,27 +44,15 @@ namespace Minimarket
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseSession();
 
             app.UseAuthorization();
-            app.Use(async (context, next) =>
-            {
-                context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-                context.Response.Headers["Pragma"] = "no-cache";
-                context.Response.Headers["Expires"] = "0";
-                await next();
-            });
-
-
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    //pattern: "{controller=Account}/{action=Login}/{id?}");
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
             });
         }
     }

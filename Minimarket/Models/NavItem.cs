@@ -7,7 +7,5 @@
         public string Controller { get; set; } = string.Empty;
         public string Action { get; set; } = string.Empty;
         public string NombrePermisos { get; set; } = string.Empty;
-        public string? Icono { get; set; }
-        public string? Estilo { get; set; }
     }
 }

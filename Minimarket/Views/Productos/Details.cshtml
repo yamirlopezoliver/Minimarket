@@ -1,152 +1,113 @@
 ﻿@model Minimarket.Models.Producto
-@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Detalles del Producto";
-    var permisosStr = HttpContextAccessor.HttpContext.Session.GetString("Permisos") ?? "";
-    var permisos = permisosStr.Split(",", StringSplitOptions.RemoveEmptyEntries);
-    bool esAdmin = permisos.Contains("ManageUsers");
 }
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet" />
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             background: linear-gradient(to right, #83a4d4, #b6fbff), url('your-background-image-url.jpg') no-repeat center center fixed;
             background-size: cover;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             color: #333;
         }
 
         h1, h4 {
             text-align: center;
             color: #fff;
-            text-shadow: 1px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .details-card {
-            background-color: rgba(255,255,255,0.9);
-            border-radius: .75rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            animation: fadeIn 0.8s ease-in-out;
+        .details-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in-out;
         }
 
-        .fab-btn {
-            width: 4rem;
-            height: 4rem;
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
         }
 
-        .product-image {
-            max-height: 300px;
-            object-fit: cover;
+            .btn-primary:hover {
+                background-color: #0056b3;
+            }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+            }
+
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        dl.row {
+            margin: 0;
+        }
+
+        dt, dd {
+            color: #000;
+        }
+
+        dt {
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container mt-5">
+        <h1>@ViewData["Title"]</h1>
+        <h4>Producto: @Html.DisplayFor(model => model.Nombre)</h4>
+        <hr />
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="details-container">
+                    <dl class="row">
+                        <dt class="col-sm-4">Nombre</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Nombre)</dd>
 
-        <div class="mb-3">
-            <a href="javascript:history.back()" class="btn btn-outline-light" style="background-color: rgba(0,0,0,0.4); border-radius: 30px; padding: 10px 20px;">
-                ← Volver al Listado
-            </a>
-        </div>
+                        <dt class="col-sm-4">Categoría</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Categoria)</dd>
 
-        <div class="card details-card position-relative">
+                        <dt class="col-sm-4">Precio</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Precio)</dd>
 
-            @if (esAdmin)
-            {
-                <a asp-controller="Productos"
-                   asp-action="Edit"
-                   asp-route-id="@Model.Id"
-                   class="btn btn-primary btn-lg rounded-circle position-absolute top-0 end-0 m-3
-                  d-flex align-items-center justify-content-center fab-btn"
-                   title="Editar producto">
-                    <i class="bi bi-pencil-fill fs-3"></i>
-                </a>
-            }
-            <form asp-controller="Home" asp-action="Carrito" method="post">
-                <div class="row g-0">
-                    <input type="hidden" name="id" value="@Model.Id" />
-                    <div class="col-12 col-md-5 text-center p-4">
-                        <img src="@Url.Content("~/image/" + (Model.Imagen ?? "imagen-por-defecto.jpg"))"
-                             alt="Imagen de @Model.Nombre"
-                             class="img-fluid rounded product-image mx-auto d-block" />
-                    </div>
+                        <dt class="col-sm-4">Stock</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Stock)</dd>
 
-                    <div class="col-12 col-md-7">
-                    
-                        <div class="card-body">
-                            <h2 class="card-title fw-bold mb-2">@Model.Nombre</h2>
-                            <span class="badge bg-secondary mb-3">@Model.Categoria</span>
+                        <dt class="col-sm-4">Fecha de Ingreso</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaIngreso)</dd>
 
-                            <h3 class="text-primary fw-semibold mb-4">
-                                $@Model.Precio?.ToString("N2")
-                            </h3>
-
-                            <dl class="row mb-4">
-                                <dt class="col-sm-4 text-muted">Stock</dt>
-                                <dd class="col-sm-8">@Model.Stock</dd>
-
-                                <dt class="col-sm-4 text-muted">Fecha de ingreso</dt>
-                                <dd class="col-sm-8">
-                                    @Model.FechaIngreso?.ToString("dd/MM/yyyy")
-                                </dd>
-                                <dt> Cantidad </dt>
-                                <dd class="col-sm-2 input-group">
-                                    <!-- Botón de disminuir -->
-                                    <button class="btn btn-outline-secondary" type="button" onclick="cambiarCantidad(-1)">-</button>
-                                    <!-- Input de número -->
-                                    <input name="cantidad" type="number" class="form-control text-center" autocomplete="off" min="1" max="5" value="1" id="cantidad"
-                                           onchange="calcularTotal()" />
-                                    <!-- Botón de aumentar -->
-                                    <button class="btn btn-outline-secondary" type="button" onclick="cambiarCantidad(1)">+</button>
-                                </dd>
-                            </dl>
-                        </div>
-                    
-                    </div>
+                    </dl>
                 </div>
-
-                <div class="card-footer bg-white
-                      d-flex flex-column flex-sm-row justify-content-center gap-3">
-                    <a asp-action="Comprar" asp-route-id="@Model.Id"
-                       class="btn btn-success flex-fill flex-sm-auto">
-                        <i class="bi bi-cart-check me-1"></i> Comprar ahora
-                    </a>
-                    <button type="submit" class="btn btn-warning flex-fill flex-sm-auto">
-                        <i class="bi bi-cart-plus me-1"></i> Añadir al carrito
-                    </button>
+                <div class="mt-4">
+                    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Editar Producto</a>
+                    <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-<script>
-
-    function cambiarCantidad(valor) {
-        const inputCantidad = document.getElementById("cantidad");
-        let cantidadActual = parseInt(inputCantidad.value);
-
-        // Ajustar la cantidad respetando el rango (min y max)
-        if (!isNaN(cantidadActual)) {
-            cantidadActual += valor;
-            if (cantidadActual >= parseInt(inputCantidad.min) && cantidadActual <= parseInt(inputCantidad.max)) {
-                inputCantidad.value = cantidadActual;
-                calcularTotal();
-            }
-        }
-    }
-</script>

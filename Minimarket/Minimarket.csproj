@@ -38,9 +38,4 @@
     <Folder Include="Data\" />
   </ItemGroup>
 
-  <ItemGroup>
-   <None Update="Data\proyectoIntegrador.sql">
-    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-   </None>
-  </ItemGroup>
 </Project>

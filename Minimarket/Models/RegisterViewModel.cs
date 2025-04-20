@@ -19,9 +19,5 @@ namespace Minimarket.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
         public string? ConfirmPassword { get; set; }
-        public string Nombre { get; set; }
-        public string Direccion { get; set; }
-        public string Telefono { get; set; }
-        public string Tipo { get; set; }
     }
 }
