@@ -64,6 +64,12 @@
                                     <span asp-validation-for="Nombre" class="text-danger small"></span>
                                 </div>
 
+                                <div class="col-12 form-floating">
+                                    <textarea asp-for="Descripcion" class="form-control" placeholder="Descripción del producto" style="height: 100px;"></textarea>
+                                    <label asp-for="Descripcion">Descripción</label>
+                                    <span asp-validation-for="Descripcion" class="text-danger small"></span>
+                                </div>
+
                                 <div class="col-12 col-md-6 form-floating">
                                     <input asp-for="Categoria" class="form-control" placeholder="Categoría" />
                                     <label asp-for="Categoria">Categoría</label>
