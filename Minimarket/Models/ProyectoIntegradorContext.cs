@@ -156,7 +156,8 @@ public partial class ProyectoIntegradorContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("username");
-            entity.Property(e => e.IdRol).HasColumnName("idRol");
+            entity.Property(e => e.IdRol).HasColumnName("idRol")
+                .ValueGeneratedOnAdd();
             entity.HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.IdRol);

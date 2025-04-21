@@ -35,7 +35,7 @@ namespace Minimarket.Controllers
                     Username = model.Username,
                     Password = model.Password,
                     CreatedAt = DateTime.Now,
-                    Tipo = "sin rol",
+                    Tipo = "client",
                     Direccion = model.Direccion,
                     Telefono = model.Telefono,
                     Nombre = model.Nombre
@@ -89,9 +89,7 @@ namespace Minimarket.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Logout()
         {
-            HttpContext.Session.Remove("UserId");
-            HttpContext.Session.Remove("Username");
-            HttpContext.Session.Remove("Permisos");
+            HttpContext.Session.Clear();
 
             return RedirectToAction("Index", "Home");
         }

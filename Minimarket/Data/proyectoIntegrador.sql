@@ -30,7 +30,7 @@ CREATE TABLE [dbo].[user](
     tipo VARCHAR(255) NULL,
     username VARCHAR(255) NULL,
     createdAt DATETIME NULL,
-    IdRol INT NULL DEFAULT 0,
+    IdRol INT DEFAULT 2,
     CONSTRAINT FK_user_Roles FOREIGN KEY (IdRol) REFERENCES Roles(IdRol)
 );
 

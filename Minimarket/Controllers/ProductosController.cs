@@ -101,9 +101,9 @@ namespace Minimarket.Controllers
 
             if (ModelState.IsValid)
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = HttpContext.Session.GetInt32("UserId");
                 if (userId != null)
-                    producto.UsuarioId = int.Parse(userId);
+                    producto.UsuarioId = userId.Value;
 
                 if (producto.ImagenFile != null && producto.ImagenFile.Length > 0)
                 {
@@ -194,10 +194,10 @@ namespace Minimarket.Controllers
                     }
                 }
 
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = HttpContext.Session.GetInt32("UserId");
                 if (userId != null)
                 {
-                    producto.UsuarioId = int.Parse(userId);
+                    producto.UsuarioId = userId.Value;
                 }
 
                 _context.Update(producto);

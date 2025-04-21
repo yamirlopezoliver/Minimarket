@@ -30,6 +30,10 @@ namespace Minimarket.Controllers
 
         public IActionResult Carrito()
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
             ViewBag.CarritoCount = detalles.Count;
             ViewBag.Total = sumaTotal;
@@ -92,7 +96,7 @@ namespace Minimarket.Controllers
 
             }
             TempData["Message"] = "Producto eliminado del carrito.";
-            TempData["MessageType"] = "warning"; // success, error, info, warning
+            TempData["MessageType"] = "success"; // success, error, info, warning
 
             return RedirectToAction("Carrito", "Home");
         }

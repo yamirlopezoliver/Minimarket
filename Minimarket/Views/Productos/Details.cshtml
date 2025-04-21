@@ -97,6 +97,9 @@
                                 <dt class="col-sm-4 text-muted">Stock</dt>
                                 <dd class="col-sm-8">@Model.Stock</dd>
 
+                                <dt class="col-sm-4 text-muted">Descripción</dt>
+                                <dd class="col-sm-8">@Model.Descripcion</dd>
+
                                 <dt class="col-sm-4 text-muted">Fecha de ingreso</dt>
                                 <dd class="col-sm-8">
                                     @Model.FechaIngreso?.ToString("dd/MM/yyyy")
@@ -107,7 +110,7 @@
                                     <button class="btn btn-outline-secondary" type="button" onclick="cambiarCantidad(-1)">-</button>
                                     <!-- Input de número -->
                                     <input name="cantidad" type="number" class="form-control text-center" autocomplete="off" min="1" max="5" value="1" id="cantidad"
-                                           onchange="calcularTotal()" />
+                                           />
                                     <!-- Botón de aumentar -->
                                     <button class="btn btn-outline-secondary" type="button" onclick="cambiarCantidad(1)">+</button>
                                 </dd>
@@ -145,7 +148,7 @@
             cantidadActual += valor;
             if (cantidadActual >= parseInt(inputCantidad.min) && cantidadActual <= parseInt(inputCantidad.max)) {
                 inputCantidad.value = cantidadActual;
-                calcularTotal();
+                //calcularTotal();
             }
         }
     }
