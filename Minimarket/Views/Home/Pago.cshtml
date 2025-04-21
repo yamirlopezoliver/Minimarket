@@ -1,0 +1,73 @@
+﻿
+@{
+}
+
+<div class="container mt-5">
+    <div class="mb-3">
+        <a asp-action="Carrito" class="btn btn-outline-light" style="background-color: rgba(0,0,0,0.4); border-radius: 30px; padding: 10px 20px;">
+            ← Volver al Carrito
+        </a>
+    </div>
+
+    <div class="card mb-2">
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <h3 class="text-center mb-4">Pago con Tarjeta</h3>
+                    <form asp-action="ProcesarPago" method="post" novalidate>
+                        <div class="mb-3">
+                            <label for="nombreTitular" class="form-label">Nombre del Titular</label>
+                            <input type="text" class="form-control" id="nombreTitular" name="nombreTitular" required />
+                            <div class="invalid-feedback">
+                                Por favor ingresa el nombre del titular.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="numeroTarjeta" class="form-label">Número de Tarjeta</label>
+                            <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" maxlength="19" placeholder="1234 5678 9012 3456" required pattern="\d{4} \d{4} \d{4} \d{4}" />
+                            <div class="invalid-feedback">
+                                Ingresa un número de tarjeta válido.
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="fechaExp" class="form-label">Fecha Expiración</label>
+                                <input type="text" class="form-control" id="fechaExp" name="fechaExp" placeholder="MM/AA" required pattern="(0[1-9]|1[0-2])\/\d{2}" />
+                                <div class="invalid-feedback">
+                                    Ingresa una fecha válida (MM/AA).
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="text" class="form-control" id="cvv" name="cvv" maxlength="4" required pattern="\d{3,4}" />
+                                <div class="invalid-feedback">
+                                    Ingresa un CVV válido.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-block">Pagar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Bootstrap 5 form validation
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('form')
+        Array.from(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>

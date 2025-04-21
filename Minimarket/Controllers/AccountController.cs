@@ -91,6 +91,8 @@ namespace Minimarket.Controllers
         {
             HttpContext.Session.Clear();
 
+            HomeController.detalles.Clear();
+
             return RedirectToAction("Index", "Home");
         }
 
