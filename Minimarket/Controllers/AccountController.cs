@@ -93,6 +93,8 @@ namespace Minimarket.Controllers
             HttpContext.Session.Remove("Username");
             HttpContext.Session.Remove("Permisos");
 
+            HomeController.detalles.Clear();
+
             return RedirectToAction("Index", "Home");
         }
 
