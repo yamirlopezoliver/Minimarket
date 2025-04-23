@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Minimarket.Models;
 
 namespace Minimarket.Controllers
@@ -101,10 +103,96 @@ namespace Minimarket.Controllers
             return RedirectToAction("Carrito", "Home");
         }
 
-        public IActionResult Pago()
+        public async Task<IActionResult> Pago()
         {
-            
+            int? idUsuario = HttpContext.Session.GetInt32("UserId");
+            if ( idUsuario == null)
+            {
+                TempData["Message"] = "Primero debe Loguearse para realizar el pedido.";
+                TempData["MessageType"] = "warning";
+                return RedirectToAction("Login", "Account");
+            }
+            //User? user = await _context.Users.FindAsync(idUsuario);
+            //if (user == null)
+            //{
+            //    TempData["Message"] = "Primero debe Loguearse para realizar el pedido.";
+            //    TempData["MessageType"] = "warning";
+            //    return RedirectToAction("Login", "Account");
+            //}
+
             return View();
+        }
+        public async Task<IActionResult> GenerarPago()
+        {
+            try
+            {
+                //obtener el numero correlativo
+                List<Ordene> ordenes = await _context.Ordenes.ToListAsync();
+                // Determinar el número mayor en las órdenes existentes
+                int numero = ordenes.Any() ? ordenes.Max(o => int.Parse(o.Numero)) + 1 : 1;
+                // Formatear el número con ceros a la izquierda
+                string numeroCorrelativo = numero.ToString("D10"); // "D10" asegura que tendrá 10 dígitos
+
+                int? idUsuario = HttpContext.Session.GetInt32("UserId");
+                if (idUsuario == null)
+                {
+                    TempData["Message"] = "Primero debe Loguearse para realizar el pedido.";
+                    TempData["MessageType"] = "warning";
+                    return RedirectToAction("Login", "Account");
+                }
+                User? usuario = await _context.Users.FindAsync(idUsuario);
+                if (usuario == null)
+                {
+                    TempData["Message"] = "El Usuario no existe.";
+                    TempData["MessageType"] = "warning";
+                    return RedirectToAction("Carrito", "Home");
+                }
+
+                Ordene orden = new Ordene
+                {
+                    Usuario = usuario,
+                    FechaCreacion = DateTime.Now,
+                    Total = sumaTotal,
+                    Numero = numeroCorrelativo
+                };
+                //guardamos orden
+                _context.Add(orden);
+                await _context.SaveChangesAsync();
+
+                foreach (var item in detalles)
+                {
+                    var det = new Detalle
+                    {
+                        Cantidad = item.Cantidad,
+                        Precio = item.Precio,
+                        Total = item.Total,
+                        Orden = orden,
+                        Producto = item.Producto
+                    };
+                    _context.Add(det);
+
+                    // Actualizar el stock del producto
+                    var producto = await _context.Productos.FindAsync(item.Producto.Id);
+                    if (producto != null)
+                    {
+                        producto.Stock -= (int)item.Cantidad; // Reducir el stock
+                        _context.Productos.Update(producto);
+                    }
+                }
+                await _context.SaveChangesAsync();
+
+                detalles = new List<Detalle>();
+
+                TempData["Message"] = "El pago fue realizado con exito.";
+                TempData["MessageType"] = "success";
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                TempData["Message"] = "No fue posible realizar el pago.";
+                TempData["MessageType"] = "error";
+                return RedirectToAction("Carrito", "Home");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
