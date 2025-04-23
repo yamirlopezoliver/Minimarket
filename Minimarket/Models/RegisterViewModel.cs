@@ -22,6 +22,6 @@ namespace Minimarket.Models
         public string Nombre { get; set; }
         public string Direccion { get; set; }
         public string Telefono { get; set; }
-        public string Tipo { get; set; }
+        //public string Tipo { get; set; }
     }
 }
