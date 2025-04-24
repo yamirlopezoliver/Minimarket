@@ -100,12 +100,10 @@ namespace Minimarket.Controllers
 
         public async Task<IActionResult> Usuarios()
         {
-            if (HttpContext.Session.GetInt32("UserId") == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            return View();
+            var users = await _context.Users
+               .Include(u => u.Role)
+               .ToListAsync();
+            return View(users);
         }
     }
 }

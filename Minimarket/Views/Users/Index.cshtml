@@ -1,0 +1,154 @@
+﻿@model IEnumerable<Minimarket.Models.User>
+
+@{
+    ViewData["Title"] = "Listado de Usuarios";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <style>
+        body {
+            background: linear-gradient(to right, #83a4d4, #b6fbff);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        h1 {
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+        }
+
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 20px;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            }
+
+        .card-header {
+            background-color: transparent;
+            border-bottom: none;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .btn-primary {
+            border-radius: 2rem;
+        }
+
+        .contenedor {
+            width: 1200px; /* Ajustar ancho según necesidad */
+            margin: 0 auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .search-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 2rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-control-lg {
+            border-radius: 2rem;
+        }
+
+        .btn-lg {
+            border-radius: 2rem;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center; /* Centrar texto en celdas */
+        }
+
+        .action-buttons a {
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <h1 class="text-center text-white mb-5">@ViewData["Title"]</h1>
+
+        <div class="search-container mb-4 p-3 rounded shadow-sm">
+            <form asp-action="Index" method="get">
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-lg rounded-pill" placeholder="🔍 Buscar usuario..." name="searchString" value="@ViewData["CurrentFilter"]" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary btn-lg rounded-pill" type="submit">Buscar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-header text-dark d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Listado de Usuarios</h5>
+                <a class="btn btn-primary text-white rounded-pill" asp-controller="Users" asp-action="Create">
+                    <i class="bi bi-person-plus-fill"></i> Nuevo Usuario
+                </a>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="bg-dark text-white">
+                            <tr class="text-center">
+                                <th><i class="bi bi-person-fill"></i> Nombre</th>
+                                <th><i class="bi bi-at"></i> Username</th>
+                                <th><i class="bi bi-envelope-fill"></i> Email</th>
+                                <th><i class="bi bi-telephone-fill"></i> Teléfono</th>
+                                <th><i class="bi bi-house-door-fill"></i> Dirección</th>
+                                <th><i class="bi bi-tag-fill"></i> Tipo</th>
+                                <th><i class="bi bi-key-fill"></i> Rol</th>
+                                <th><i class="bi bi-calendar-plus-fill"></i> Creado</th>
+                                <th><i class="bi bi-gear-fill"></i> Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="text-center">
+                                    <td>@item.Nombre</td>
+                                    <td>@item.Username</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.Telefono</td>
+                                    <td>@item.Direccion</td>
+                                    <td>@item.Tipo</td>
+                                    <td>@item.Role?.Nombre</td>
+                                    <td>@item.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a asp-controller="Users" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning rounded-pill"><i class="bi bi-pencil-square"></i> Editar</a>
+                                            <a asp-controller="Users" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger rounded-pill"><i class="bi bi-trash-fill"></i> Eliminar</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
