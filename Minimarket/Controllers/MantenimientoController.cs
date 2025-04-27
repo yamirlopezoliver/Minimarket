@@ -63,14 +63,66 @@ namespace Minimarket.Controllers
         public async Task<IActionResult> DashboardProductos()
         {
             if (HttpContext.Session.GetInt32("UserId") == null)
-            {
                 return RedirectToAction("Login", "Account");
-            }
 
-            var total = await _context.Productos.CountAsync();
-            ViewBag.TotalProductos = total;
+            var totalProductos = await _context.Productos.CountAsync();
+
+            var distribCategoria = await _context.Productos
+                .GroupBy(p => p.Categoria ?? "Sin categoría")
+                .Select(g => new { Categoria = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            var ventasPorProducto = await _context.Productos
+                .GroupJoin(
+                    _context.Detalles,
+                    p => p.Id,
+                    d => d.ProductoId,
+                    (p, detallesGroup) => new {
+                        Nombre = p.Nombre,
+                        TotalVendido = detallesGroup.Sum(d => (int?)d.Cantidad) ?? 0
+                    }
+                )
+                .OrderByDescending(x => x.TotalVendido)
+                .ToListAsync();
+
+            var vendidos = ventasPorProducto.Where(v => v.TotalVendido > 0).ToList();
+            var totalUnidades = vendidos.Sum(v => v.TotalVendido);
+            var maxVendido = vendidos.Any() ? vendidos.Max(v => v.TotalVendido) : 0;
+            var topNames = vendidos.Where(v => v.TotalVendido == maxVendido)
+                                         .Select(v => v.Nombre).ToList();
+            var sinVentas = await _context.Productos.CountAsync() - vendidos.Count;
+
+            int umbral = 5;
+            var lowStockCount = await _context.Productos.CountAsync(p => p.Stock <= umbral);
+
+            var totalIngresos = await _context.Detalles
+                .SumAsync(d => d.Cantidad * d.Precio);
+
+            var ultimas5 = await _context.Ordenes
+                .OrderByDescending(o => o.FechaCreacion)
+                .Take(5)
+                .SelectMany(o => o.Detalles.Select(d => new {
+                    Fecha = o.FechaCreacion,
+                    Producto = d.Nombre,
+                    Cantidad = d.Cantidad,
+                    Total = d.Total
+                }))
+                .ToListAsync();
+
+            ViewBag.TotalProductos = totalProductos;
+            ViewBag.CatLabels = distribCategoria.Select(x => x.Categoria).ToList();
+            ViewBag.CatCounts = distribCategoria.Select(x => x.Count).ToList();
+            ViewBag.VentasLabels = vendidos.Select(v => v.Nombre).ToList();
+            ViewBag.VentasCounts = vendidos.Select(v => v.TotalVendido).ToList();
+            ViewBag.TopNames = topNames;
+            ViewBag.TopCount = maxVendido;
+            ViewBag.LowStockCount = lowStockCount;
+            ViewBag.TotalIngresos = totalIngresos;
+            ViewBag.Ultimas5 = ultimas5;
+
             return PartialView("_DashboardProductos");
         }
+
 
         public async Task<IActionResult> DashboardOrdenes()
         {
