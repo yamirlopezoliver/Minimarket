@@ -24,7 +24,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="numeroTarjeta" class="form-label">Número de Tarjeta</label>
-                            <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" maxlength="19" placeholder="1234 5678 9012 3456" required pattern="\d{4} \d{4} \d{4} \d{4}" />
+                            <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" maxlength="19" placeholder="1234 5678 9012 3456" required />
                             <div class="invalid-feedback">
                                 Ingresa un número de tarjeta válido.
                             </div>
@@ -32,7 +32,7 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="fechaExp" class="form-label">Fecha Expiración</label>
-                                <input type="text" class="form-control" id="fechaExp" name="fechaExp" placeholder="MM/AA" required pattern="(0[1-9]|1[0-2])\/\d{2}" />
+                                <input type="text" class="form-control" id="fechaExp" name="fechaExp" maxlength="5" placeholder="MM/AA" required />
                                 <div class="invalid-feedback">
                                     Ingresa una fecha válida (MM/AA).
                                 </div>
@@ -70,4 +70,21 @@
             }, false)
         })
     })()
+</script>
+<script>
+    const numeroTarjetaInput = document.getElementById('numeroTarjeta');
+    numeroTarjetaInput.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        value = value.match(/.{1,4}/g)?.join(' ') ?? value;
+        e.target.value = value;
+    });
+
+    const fechaExpInput = document.getElementById('fechaExp');
+    fechaExpInput.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length >= 3) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        e.target.value = value;
+    });
 </script>

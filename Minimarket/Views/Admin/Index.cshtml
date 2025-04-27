@@ -60,27 +60,42 @@
             if (currentChart !== null) {
                 currentChart.destroy();
             }
+
+            let chartType = 'doughnut';
+            if (tipo.toLowerCase() === 'productos') {
+                chartType = 'bar';
+                canvas.parentElement.style.width = '600px';
+                canvas.parentElement.style.height = '450px';
+            } else {
+                canvas.parentElement.style.width = '400px';
+                canvas.parentElement.style.height = '400px';
+            }
             currentChart = new Chart(ctx, {
-                type: 'doughnut',
+                type: chartType,
                 data: {
                     labels: labels,
                     datasets: [{
                         label: `Distribución de ${tipo}`,
                         data: data,
-                        backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545'],
-                        borderColor: ['#0056b3', '#1e7e34', '#d39e00', '#bd2130'],
+                        backgroundColor: chartType === 'bar' ? ['#007bff', '#28a745', '#ffc107', '#dc3545'] : ['#007bff', '#28a745', '#ffc107', '#dc3545'],
+                        borderColor: chartType === 'bar' ? '#0056b3' : ['#0056b3', '#1e7e34', '#d39e00', '#bd2130'],
                         borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
                     plugins: {
-                        legend: { display: true },
+                        legend: { display: chartType !== 'bar' },
                         title: {
                             display: true,
                             text: `Distribución de ${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`
                         }
-                    }
+                    },
+                    scales: chartType === 'bar' ? {
+                        y: {
+                            beginAtZero: true
+                        }
+                    } : {}
                 }
             });
         }

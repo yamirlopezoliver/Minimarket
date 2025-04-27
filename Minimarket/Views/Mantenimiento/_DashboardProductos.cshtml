@@ -1,2 +1,118 @@
-﻿<h4>Panel de Productos</h4>
-<p>Total productos registrados: <strong>@ViewBag.TotalProductos</strong></p>
+﻿@{
+    ViewData["Title"] = "Dashboard de Productos";
+
+    var total = (int)(ViewBag.TotalProductos ?? 0);
+    var catLabels = ViewBag.CatLabels as List<string> ?? new();
+    var catCounts = ViewBag.CatCounts as List<int> ?? new();
+
+    var venLabels = ViewBag.VentasLabels as List<string> ?? new();
+    var venCounts = ViewBag.VentasCounts as List<int> ?? new();
+    var topNames = ViewBag.TopNames as List<string> ?? new();
+    var topCount = (int)(ViewBag.TopCount ?? 0);
+    var sinVentas = total - venLabels.Count;
+
+    var totalUnidades = venCounts.Sum();
+    var lowStockCount = (int)(ViewBag.LowStockCount ?? 0);
+    var totalIngresos = (decimal)(ViewBag.TotalIngresos ?? 0m);
+
+    var ultimas5 = ViewBag.Ultimas5 as List<dynamic> ?? new List<dynamic>();
+}
+
+<div class="container-fluid py-4">
+    <h4 class="text-center mb-5">Dashboard de Productos</h4>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+        <div class="col">
+            <div class="card bg-success text-white text-center h-100 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Total Productos</h5>
+                    <p class="display-6">@total</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-primary text-white text-center h-100 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Unidades Vendidas</h5>
+                    <p class="display-6">@totalUnidades</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-secondary text-white text-center h-100 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Total Ingresos</h5>
+                    <p class="display-6">@totalIngresos.ToString("C")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-4 g-4 mb-5">
+        <div class="col">
+            <div class="card bg-light text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">Productos Sin Ventas</h6>
+                    <p class="display-6">@sinVentas</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-warning text-dark text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">Stock Bajo (&le;5)</h6>
+                    <p class="display-6">@lowStockCount</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-info text-white text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">Más Vendido</h6>
+                    @if (topNames.Any())
+                    {
+                        <ul class="list-unstyled small mb-2" style="max-height:5rem; overflow-y:auto;">
+                            @foreach (var name in topNames)
+                            {
+                                <li>@name</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="mb-2">—</p>
+                    }
+                    <p class="h5">@topCount</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-light text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">Categorías</h6>
+                    @for (int i = 0; i < catLabels.Count; i++)
+                    {
+                        <div class="mb-2">
+                            <strong>@catLabels[i]:</strong> @catCounts[i]
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div style="width:400px; height:400px; margin:auto;">
+            <canvas id="productosChart"
+                    data-labels='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(venLabels))'
+                    data-counts='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(venCounts))'
+                    data-tipo="productos">
+            </canvas>
+        </div>
+    </div>
+</div>
