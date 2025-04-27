@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Crear Usuario";
-    bool puedeSubirImagen = ViewBag.PuedeSubirImagen ?? false;
 }
 
 <!DOCTYPE html>
@@ -27,12 +26,6 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             animation: fadeIn 0.8s ease-in-out;
         }
-
-        .user-image-placeholder {
-            max-width: 150px;
-            height: auto;
-            border-radius: 50%;
-        }
     </style>
 </head>
 <body>
@@ -52,24 +45,6 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                     <div class="row">
-                        @* <div class="col-12 col-md-4 text-center mb-4 mb-md-0">
-                            <img src="@Url.Content("~/image/usuario-por-defecto.png")"
-                                 alt="Imagen de usuario"
-                                 class="img-fluid rounded-circle mx-auto d-block mb-3 user-image-placeholder"
-                                 id="previewImagen" style="@(!puedeSubirImagen ? "margin-bottom: 1.5rem;" : "")" />
-                            @if (puedeSubirImagen)
-                            {
-                                <div class="mb-3">
-                                    <label for="ImagenFile" class="form-label">Imagen de Usuario</label>
-                                    <input type="file" class="form-control" id="ImagenFile" name="ImagenFile" accept="image/*" onchange="previewFile()" />
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="text-muted small text-center">La carga de imagen no está habilitada.</div>
-                            }
-                        </div> *@
-
                         <div class="col-12 col-md-8">
                             <div class="row g-3">
                                 <div class="col-12 form-floating">
@@ -125,7 +100,7 @@
                     </div>
 
                     <div class="mt-4 d-flex flex-column flex-sm-row justify-content-between gap-2">
-                        <a asp-action="Index" class="btn btn-outline-secondary flex-fill flex-sm-auto">
+                        <a href="javascript:history.back()" class="btn btn-outline-secondary flex-fill flex-sm-auto">
                             Cancelar
                         </a>
                         <button type="submit" class="btn btn-primary flex-fill flex-sm-auto">
@@ -137,29 +112,5 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function previewFile() {
-            const file = document.querySelector('#ImagenFile').files[0];
-            const preview = document.querySelector('#previewImagen');
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onloadend = function() {
-                    preview.src = reader.result;
-                }
-                reader.readAsDataURL(file);
-            } else {
-                preview.src = "@Url.Content("~/image/usuario-por-defecto.png")";
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const puedeSubir = @(puedeSubirImagen.ToString().ToLower());
-            const preview = document.querySelector('#previewImagen');
-            if (!puedeSubir && preview.src.endsWith('usuario-por-defecto.png')) {
-                preview.style.marginBottom = '1.5rem';
-            }
-        });
-    </script>
 </body>
 </html>
