@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Minimarket.Models;
+using System.Linq;
 using System.Threading.Tasks;
+
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace Minimarket.Controllers
 {
@@ -89,7 +93,7 @@ namespace Minimarket.Controllers
             var totalUnidades = vendidos.Sum(v => v.TotalVendido);
             var maxVendido = vendidos.Any() ? vendidos.Max(v => v.TotalVendido) : 0;
             var topNames = vendidos.Where(v => v.TotalVendido == maxVendido)
-                                         .Select(v => v.Nombre).ToList();
+                                            .Select(v => v.Nombre).ToList();
             var sinVentas = await _context.Productos.CountAsync() - vendidos.Count;
 
             int umbral = 5;
@@ -157,5 +161,104 @@ namespace Minimarket.Controllers
                .ToListAsync();
             return View(users);
         }
+
+        public async Task<IActionResult> ReporteVentasDetallado()
+        {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var ventasDetalladas = await _context.Ordenes
+                .Include(o => o.Usuario)
+                .Include(o => o.Detalles)
+                    .ThenInclude(d => d.Producto)
+                .ToListAsync();
+
+            return View("_ReporteVentasDetallado", ventasDetalladas);
+        }
+        // exportar en PDF
+        public async Task<IActionResult> ExportarPdfReporteVentas()
+        {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var ventasDetalladas = await _context.Ordenes
+                .Include(o => o.Usuario)
+                .Include(o => o.Detalles)
+                    .ThenInclude(d => d.Producto)
+                .ToListAsync();
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Document document = new Document(PageSize.A4.Rotate(), 10, 10, 10, 10);
+                PdfWriter writer = PdfWriter.GetInstance(document, ms);
+                document.Open();
+
+                // Agregar título
+                Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18);
+                Paragraph title = new Paragraph("Reporte de Ventas Detallado", titleFont);
+                title.Alignment = Element.ALIGN_CENTER;
+                document.Add(title);
+                document.Add(new Paragraph(" ")); // Espacio
+
+                // Crear tabla
+                PdfPTable table = new PdfPTable(8);
+                table.WidthPercentage = 100;
+                // Anchos de columna ajustados para mayor precisión
+                table.SetWidths(new float[] { 0.8f, 1.2f, 1.8f, 1.8f, 0.7f, 1.2f, 1.2f, 1.2f });
+
+                // Agregar encabezados
+                Font headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 9);
+                table.AddCell(new PdfPCell(new Phrase("Nro. Orden", headerFont)) { HorizontalAlignment = Element.ALIGN_CENTER });
+                table.AddCell(new PdfPCell(new Phrase("Fecha Creación", headerFont)) { HorizontalAlignment = Element.ALIGN_CENTER });
+                table.AddCell(new PdfPCell(new Phrase("Usuario", headerFont)) { HorizontalAlignment = Element.ALIGN_CENTER });
+                table.AddCell(new PdfPCell(new Phrase("Producto", headerFont)) { HorizontalAlignment = Element.ALIGN_CENTER });
+                table.AddCell(new PdfPCell(new Phrase("Cant.", headerFont)) { HorizontalAlignment = Element.ALIGN_CENTER });
+                table.AddCell(new PdfPCell(new Phrase("Precio Unitario", headerFont)) { HorizontalAlignment = Element.ALIGN_RIGHT });
+                table.AddCell(new PdfPCell(new Phrase("Total Detalle", headerFont)) { HorizontalAlignment = Element.ALIGN_RIGHT });
+                table.AddCell(new PdfPCell(new Phrase("Total Orden", headerFont)) { HorizontalAlignment = Element.ALIGN_RIGHT });
+
+                // Agregar datos
+                Font cellFont = FontFactory.GetFont(FontFactory.HELVETICA, 8);
+                foreach (var orden in ventasDetalladas)
+                {
+                    foreach (var detalle in orden.Detalles)
+                    {
+                        table.AddCell(new PdfPCell(new Phrase(orden.Numero, cellFont)) { HorizontalAlignment = Element.ALIGN_CENTER });
+                        table.AddCell(new PdfPCell(new Phrase(orden.FechaCreacion?.ToString("dd/MM/yyyy HH:mm") ?? "", cellFont)) { HorizontalAlignment = Element.ALIGN_CENTER });
+                        table.AddCell(new PdfPCell(new Phrase(orden.Usuario?.Nombre + " (" + orden.Usuario?.Username + ")", cellFont)) { HorizontalAlignment = Element.ALIGN_LEFT });
+                        table.AddCell(new PdfPCell(new Phrase(detalle.Producto?.Nombre ?? "", cellFont)) { HorizontalAlignment = Element.ALIGN_LEFT });
+                        table.AddCell(new PdfPCell(new Phrase(detalle.Cantidad.ToString(), cellFont)) { HorizontalAlignment = Element.ALIGN_CENTER });
+                        table.AddCell(new PdfPCell(new Phrase(detalle.Precio?.ToString("C") ?? "", cellFont)) { HorizontalAlignment = Element.ALIGN_RIGHT });
+                        table.AddCell(new PdfPCell(new Phrase(detalle.Total?.ToString("C") ?? "", cellFont)) { HorizontalAlignment = Element.ALIGN_RIGHT });
+
+                        // Manejo preciso de la celda con rowspan
+                        if (orden.Detalles.First() == detalle)
+                        {
+                            PdfPCell totalOrdenCell = new PdfPCell(new Phrase(orden.Total?.ToString("C") ?? "", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 8)))
+                            {
+                                Rowspan = orden.Detalles.Count,
+                                HorizontalAlignment = Element.ALIGN_RIGHT
+                            };
+                            table.AddCell(totalOrdenCell);
+                        }
+                        else
+                        {
+                            // No agregar celda adicional para las filas siguientes del mismo orden
+                        }
+                    }
+                }
+
+                document.Add(table);
+                document.Close();
+
+                byte[] pdfBytes = ms.ToArray();
+                return File(pdfBytes, "application/pdf", "ReporteVentas.pdf");
+            }
+        }
+        //FINAL PDF
     }
 }
