@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Minimarket.Models;
@@ -103,7 +104,7 @@ namespace Minimarket.Controllers
             return RedirectToAction("Carrito", "Home");
         }
 
-        public async Task<IActionResult> Pago()
+        public IActionResult Pago()
         {
             int? idUsuario = HttpContext.Session.GetInt32("UserId");
             if ( idUsuario == null)
@@ -112,14 +113,6 @@ namespace Minimarket.Controllers
                 TempData["MessageType"] = "warning";
                 return RedirectToAction("Login", "Account");
             }
-            //User? user = await _context.Users.FindAsync(idUsuario);
-            //if (user == null)
-            //{
-            //    TempData["Message"] = "Primero debe Loguearse para realizar el pedido.";
-            //    TempData["MessageType"] = "warning";
-            //    return RedirectToAction("Login", "Account");
-            //}
-
             return View();
         }
         public async Task<IActionResult> GenerarPago()
@@ -192,6 +185,71 @@ namespace Minimarket.Controllers
                 TempData["Message"] = "No fue posible realizar el pago.";
                 TempData["MessageType"] = "error";
                 return RedirectToAction("Carrito", "Home");
+            }
+        }
+
+        public async Task<IActionResult> ListaOrden()
+        {
+            List<Ordene> listaOrdenes = new List<Ordene>();
+            int? idUsuario = HttpContext.Session.GetInt32("UserId");
+            if (idUsuario == null)
+            {
+                TempData["Message"] = "Debe iniciar sesión para ver sus órdenes.";
+                TempData["MessageType"] = "warning";
+                return RedirectToAction("Login", "Account");
+            }
+
+            var usuario = await _context.Users
+                .Include(u => u.Ordenes) 
+                .FirstOrDefaultAsync(u => u.Id == idUsuario);
+
+            if (usuario == null)
+            {
+                TempData["Message"] = "Usuario no encontrado.";
+                TempData["MessageType"] = "error";
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Verificamos si el usuario es administrador
+            if (HttpContext.Session.GetInt32("UserIdRol")==1)
+            {
+                listaOrdenes = await _context.Ordenes
+                    .Include(o => o.Usuario)
+                    .ToListAsync();
+            }else{
+                listaOrdenes = usuario.Ordenes.ToList();
+            }
+
+            return View(listaOrdenes);
+        }
+
+        public async Task<IActionResult> DetalleOrden(int id)
+        {
+            List<Detalle> lista = new List<Detalle>();
+            try
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+                //obtiene detalles oasociados a Orden
+                var orden = await _context.Ordenes.Include(u => u.Detalles).FirstOrDefaultAsync(d => d.Id == id);
+                if (orden == null)
+                {
+                    return NotFound();
+                }
+                var usuario = await _context.Users.FindAsync(orden.UsuarioId);
+                
+                lista = orden.Detalles.ToList();
+                ViewBag.Usuario = usuario;
+                ViewBag.Total = orden.Total;
+                return View(lista);
+            }
+            catch
+            {
+                TempData["Message"] = "Ocurrio un error al obtener detalle, Intentelo de nuevo mas tarde.";
+                TempData["MessageType"] = "warning";
+                throw;
             }
         }
 
