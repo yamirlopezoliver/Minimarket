@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<Minimarket.Models.Ordene>
+
+@{
     ViewData["Title"] = "Dashboard de Administración";
 }
 
@@ -27,10 +29,10 @@
 
     <div class="col-md-4">
         <div class="card bg-success text-white mb-3">
-            <div class="card-header">Órdenes</div>
+            <div class="card-header">Reporte de ventas</div>
             <div class="card-body">
-                <h5 class="card-title">Total de órdenes registradas</h5>
-                <button class="btn btn-light" onclick="cargarDashboard('Ordenes')">Ver</button>
+                <h5 class="card-title">Reporte</h5>
+                <a asp-controller="Mantenimiento" asp-action="ReporteVentasDetallado" class="btn btn-light">Ver</a>
             </div>
         </div>
     </div>
@@ -43,7 +45,22 @@
 @section Scripts {
     <script>
         function cargarDashboard(tipo) {
-            $("#seccionDashboard").load('/Mantenimiento/Dashboard' + tipo, function () {
+            let url = '/Mantenimiento/Dashboard';
+            if (tipo === 'Usuarios') {
+                url += 'Usuarios';
+            } else if (tipo === 'Productos') {
+                url += 'Productos';
+            } else if (tipo === 'Ordene') {
+                // Redirect to the ReporteVentasDetallado action
+                window.location.href = '/Mantenimiento/ReporteVentasDetallado';
+                return; // Prevent further execution
+            } else if (tipo === 'Ordenes') {
+                url += 'Ordenes';
+            } else {
+                url += tipo;
+            }
+
+            $("#seccionDashboard").load(url, function () {
                 dibujarGrafico();
             });
         }
@@ -100,4 +117,6 @@
             });
         }
     </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 }
