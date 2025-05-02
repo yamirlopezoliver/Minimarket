@@ -1,0 +1,66 @@
+﻿﻿
+@model IEnumerable<Minimarket.Models.Ordene>
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var permisosStr = HttpContextAccessor.HttpContext.Session.GetString("Permisos") ?? "";
+    var permisos = permisosStr.Split(",", StringSplitOptions.RemoveEmptyEntries);
+    bool esAdmin = permisos.Contains("ManageUsers");
+    var i = 1;
+}
+
+<div class="container mt-3">
+    <div class="mb-3">
+        <a asp-controller="Productos" asp-action="Index" class="btn btn-outline-light" style="background-color: rgba(0,0,0,0.4); border-radius: 30px; padding: 10px 20px;">
+            ← Volver a Dashboard
+        </a>
+    </div>
+
+    @if (esAdmin)
+    {
+        <h3>Listado de todas las ordenes</h3>
+    }
+
+    <div class="card mb-2">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-9">
+                    <table class="table table-hover align-middle">
+                        <thead class="bg-dark text-white">
+                            <tr class="text-center">
+                                <th><i class="bi bi-hash"></i> Nº</th>
+                                <th><i class="bi bi-card-heading"></i> Numero</th>
+                                <th><i class="bi bi-currency-dollar"></i> Total</th>
+                                <th><i class="bi bi-calendar-date"></i> Fecha Creación</th>
+                                <th><i class="bi bi-gear"></i> Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="text-center">
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => item.Numero)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                                    <td>@(item.FechaCreacion.HasValue ? item.FechaCreacion.Value.ToString("dd/MM/yyyy") : "")</td>
+                                    <td>
+                                        <a class="btn btn-success" asp-action="DetalleOrden" asp-route-id="@item.Id">Ver detalle</a>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+</style>

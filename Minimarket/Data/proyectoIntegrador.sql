@@ -88,12 +88,13 @@ CREATE TABLE [dbo].[NavItems](
 );
 
 INSERT INTO Roles (IdRol, Nombre) VALUES (0, 'Sin Rol'), (1,'Admin'), (2,'Cliente');
-INSERT INTO Permissions (Nombre) VALUES ('ManageUsers'), ('ViewSales'), ('VerProductos'), ('VerMantenimiento'), ('VerCarrito');
-INSERT INTO RolePermissions (IdRol, IdPermisos) VALUES (1, 1), (1, 2), (2, 2), (1, 3), (2, 3), (1, 4), (1, 5), (2, 5);
+INSERT INTO Permissions (Nombre) VALUES ('ManageUsers'), ('ViewSales'),('ViewCompras'), ('VerProductos'), ('VerMantenimiento'), ('VerCarrito');
+INSERT INTO RolePermissions (IdRol, IdPermisos) VALUES (1, 1), (1, 2), (2,3), (2, 2), (1, 4), (2, 4), (1, 5), (1, 6), (2, 6);
 
 INSERT INTO NavItems (Title, Controller, Action, NombrePermisos, Icono, Estilo) VALUES
 ('Panel Admin', 'Admin', 'Index', 'ManageUsers', 'fas fa-tachometer-alt', 'nav-link text-dark'),
-('Ventas', 'Ventas', 'Index', 'ViewSales', 'fas fa-chart-line', 'nav-link text-dark'),
+('Ventas', 'Home', 'ListaOrden', 'ViewSales', 'fas fa-chart-line', 'nav-link text-dark'),
+('Compras', 'Home', 'ListaOrden', 'ViewCompras', 'fas fa-chart-line', 'nav-link text-dark'),
 ('Productos', 'Productos', 'Index', 'VerProductos', 'fas fa-cogs', 'nav-link text-dark'),
 ('Mantenimiento', 'Mantenimiento', 'Index', 'VerMantenimiento', 'fas fa-wrench', 'nav-link text-dark'),
 ('Carrito', 'Home', 'Carrito', 'VerCarrito', 'fas fa-cart-plus', 'nav-link active');
