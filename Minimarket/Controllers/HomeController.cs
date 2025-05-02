@@ -60,7 +60,7 @@ namespace Minimarket.Controllers
             {
                 Cantidad = cantidad,
                 Precio = producto.Precio,
-                Total = cantidad * producto.Precio,
+                Total = TruncarADosDecimales(cantidad * producto.Precio),
                 Producto = producto
             };
 
@@ -145,7 +145,7 @@ namespace Minimarket.Controllers
                 {
                     Usuario = usuario,
                     FechaCreacion = DateTime.Now,
-                    Total = sumaTotal,
+                    Total = TruncarADosDecimales(sumaTotal),
                     Numero = numeroCorrelativo
                 };
                 //guardamos orden
@@ -241,8 +241,9 @@ namespace Minimarket.Controllers
                 var usuario = await _context.Users.FindAsync(orden.UsuarioId);
                 
                 lista = orden.Detalles.ToList();
+                ViewBag.NroOrden = orden.Numero;
                 ViewBag.Usuario = usuario;
-                ViewBag.Total = orden.Total;
+                ViewBag.Total = TruncarADosDecimales(orden.Total);
                 return View(lista);
             }
             catch
@@ -262,6 +263,14 @@ namespace Minimarket.Controllers
             }
 
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public double TruncarADosDecimales(double? valor)
+        {
+            if (valor == null)
+                return 0.0; // o lanza una excepción, según tu lógica
+
+            return Math.Truncate(valor.Value * 100) / 100;
         }
     }
 }

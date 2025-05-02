@@ -9,6 +9,7 @@ namespace Minimarket.Controllers
         {
             ViewBag.CarritoCount = HomeController.detalles.Count;
             base.OnActionExecuted(context);
+
         }
     }
 }
