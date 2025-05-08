@@ -60,6 +60,7 @@ namespace Minimarket.Controllers
             {
                 Cantidad = cantidad,
                 Precio = producto.Precio,
+                Nombre = producto.Nombre,
                 Total = TruncarADosDecimales(cantidad * producto.Precio),
                 Producto = producto
             };
