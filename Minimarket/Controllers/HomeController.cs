@@ -159,6 +159,7 @@ namespace Minimarket.Controllers
                         Cantidad = item.Cantidad,
                         Precio = item.Precio,
                         Total = item.Total,
+                        Nombre = item.Nombre,
                         Orden = orden,
                         Producto = item.Producto
                     };
