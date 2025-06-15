@@ -1,91 +1,101 @@
 ﻿@{
-    ViewData["Title"] = "E-Commers - Venta de hardware informático";
+    ViewData["Title"] = "Tienda de Ropa - Estilo para Todos";
 }
 
 <!-- Hero Section with Carousel -->
-<div id="mainCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
-        <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
-        <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
+<div class="container mb-5">
+    <div id="mainCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://images.pexels.com/photos/13680054/pexels-photo-13680054.jpeg"
+                     class="d-block w-100"
+                     alt="Interior moderno de tienda de ropa"
+                     style="max-height: 400px; object-fit: cover;">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2>Bienvenido a Nuestra Tienda</h2>
+                    <p>Explora un espacio diseñado para tu estilo</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://as1.ftcdn.net/v2/jpg/03/06/10/73/1000_F_306107326_e1kFJpR1G8wJcQwLh86fpvNNKOEOKVPL.jpg"
+                     class="d-block w-100"
+                     alt="Maniquíes y exhibidores modernos"
+                     style="max-height: 400px; object-fit: cover;">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2>Escaparate de Temporada</h2>
+                    <p>Las piezas más trendy en un solo lugar</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://uniquekiosk.com/wp-content/uploads/2020/09/clthing-shop-27.jpg"
+                     class="d-block w-100"
+                     alt="Racks y perchas contemporáneas"
+                     style="max-height: 400px; object-fit: cover;">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2>Selección Curada</h2>
+                    <p>Encuentra tu look perfecto entre nuestras colecciones</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+            <span class="visually-hidden">Siguiente</span>
+        </button>
     </div>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="https://img.freepik.com/fotos-premium/serie-nuevas-computadoras-portatiles-expuestas-tienda-electronica_1127-37816.jpg" class="d-block w-100" alt="Productos frescos" style="height: 400px; object-fit: cover;">
-            <div class="carousel-caption d-none d-md-block">
-                <h2>Hardware Informático de Última Generación</h2>
-                <p>Componentes y periféricos de alto rendimiento para gamers, creadores y profesionales</p>
-                O si prefieres un enfoque más específico:
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="https://th.bing.com/th/id/OIP.QM5hSKl1j7xyI97Zw6QnEAHaFE?rs=1&pid=ImgDetMain" class="d-block w-100" alt="Ofertas especiales" style="height: 400px; object-fit: cover;">
-            <div class="carousel-caption d-none d-md-block">
-                <h2>Ofertas en Hardware Gamer</h2>
-                <p>¡Descuentos en componentes de alto rendimiento!</p>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="https://dabego.de/wp-content/uploads/2018/06/anschreiben-bewerbung-aufbau.jpeg" class="d-block w-100" alt="Productos destacados" style="height: 400px; object-fit: cover;">
-            <div class="carousel-caption d-none d-md-block">
-                <h2>Hardware Destacado</h2>
-                <p>Los componentes más potentes y periféricos premium para tu setup</p>
-            </div>
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-        <span class="visually-hidden">Anterior</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-        <span class="visually-hidden">Siguiente</span>
-    </button>
 </div>
 
 <!-- Sección de Bienvenida -->
 <div class="container mb-5">
     <div class="row text-center">
         <div class="col-12">
-            <h1 class="display-4 mb-4">Bienvenidos a E-commers de Hardware informático</h1>
-            <p class="lead">Tu solución integral en componentes y accesorios informáticos</p>
+            <h1 class="display-4 mb-4">Bienvenidos a nuestra Tienda de Ropa</h1>
+            <p class="lead">Encuentra las últimas tendencias en moda para hombres, mujeres y niños</p>
         </div>
     </div>
 </div>
 
 <!-- Sección de Productos Destacados -->
 <div class="container mb-5">
-    <h2 class="text-center mb-4">Hardware Destacados</h2>
+    <h2 class="text-center mb-4">Ropa Destacada</h2>
     <div class="row">
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="badge bg-danger position-absolute" style="top: 0.5rem; right: 0.5rem">Oferta</div>
-                <img src="~/image/imagen-por-defecto.jpg" class="card-img-top" alt="Frutas frescas" style="height: 200px; object-fit: cover;">
+                <img src="https://i.pinimg.com/736x/34/4d/2a/344d2a3edec7eb774b807c58f107303d.jpg" class="card-img-top" alt="Ropa urbana en tienda" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
-                    <h5 class="card-title">Componentes Premium</h5>
-                    <p class="card-text">Selección de hardware de alto rendimiento</p>
-                    <p class="card-text"><small class="text-danger"><strong>20% de descuento</strong></small></p>
+                    <h5 class="card-title">Looks Urbanos</h5>
+                    <p class="card-text">Moda casual con hasta 30% de descuento</p>
+                    <p class="card-text"><small class="text-danger"><strong>¡Aprovecha ahora!</strong></small></p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="badge bg-success position-absolute" style="top: 0.5rem; right: 0.5rem">Nuevo</div>
-                <img src="~/image/imagen-por-defecto.jpg" class="card-img-top" alt="Lácteos" style="height: 200px; object-fit: cover;">
+                <img src="https://th.bing.com/th/id/R.d90100869fb1f5c4ebbfa567000e3854?rik=q%2fWK8cMszr6ygw&pid=ImgRaw&r=0" class="card-img-top" alt="Moda hombre elegante" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
-                    <h5 class="card-title">GPUs Gaming</h5>
-                    <p class="card-text">Tarjetas gráficas de última generación</p>
-                    <p class="card-text"><small class="text-success"><strong>Recién llegados</strong></small></p>
+                    <h5 class="card-title">Camisas Hombre</h5>
+                    <p class="card-text">Diseños modernos y elegantes recién llegados</p>
+                    <p class="card-text"><small class="text-success"><strong>Nueva colección</strong></small></p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="badge bg-primary position-absolute" style="top: 0.5rem; right: 0.5rem">Popular</div>
-                <img src="~/image/imagen-por-defecto.jpg" class="card-img-top" alt="Snacks" style="height: 200px; object-fit: cover;">
+                <img src="https://ae01.alicdn.com/kf/HTB1kQLuIVXXXXamXpXXq6xXFXXXw/Marca-de-Moda-de-Las-Mujeres-Vestido-Estampado-de-Flores-M-s-El-Tama-o-Grande.jpg" class="card-img-top" alt="Vestido elegante mujer" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
-                    <h5 class="card-title">Periféricos Gaming</h5>
-                    <p class="card-text">Los mejores accesorios para tu experiencia de juego</p>
+                    <h5 class="card-title">Vestidos Mujer</h5>
+                    <p class="card-text">Elegancia y estilo para cualquier evento</p>
                     <p class="card-text"><small class="text-primary"><strong>¡Los más vendidos!</strong></small></p>
                 </div>
             </div>
@@ -96,27 +106,33 @@
 <!-- Sección de Servicios -->
 <div class="container-fluid bg-light py-5">
     <div class="container">
-        <h2 class="text-center mb-4">Nuestros Servicios</h2>
+        <h2 class="text-center mb-5 fw-bold text-dark">Nuestros Servicios</h2>
         <div class="row text-center">
             <div class="col-md-4 mb-4">
-                <div class="p-3">
-                    <i class="fas fa-truck fs-1 text-primary mb-3"></i>
-                    <h4>Entrega a Domicilio</h4>
-                    <p>Llevamos tus compras hasta la puerta de tu casa</p>
+                <div class="p-4 bg-white shadow-sm rounded-4 h-100">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-truck fa-2x text-primary"></i>
+                    </div>
+                    <h5 class="fw-semibold text-dark">Envíos a Todo el País</h5>
+                    <p class="text-muted">Recibe tus prendas en casa con rapidez y seguridad</p>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="p-3">
-                    <i class="fas fa-clock fs-1 text-primary mb-3"></i>
-                    <h4>Horario Extendido</h4>
-                    <p>Abierto todos los días de 7:00 AM a 10:00 PM</p>
+                <div class="p-4 bg-white shadow-sm rounded-4 h-100">
+                    <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-exchange-alt fa-2x text-success"></i>
+                    </div>
+                    <h5 class="fw-semibold text-dark">Cambios y Devoluciones</h5>
+                    <p class="text-muted">Garantía de satisfacción o cambio gratuito sin complicaciones</p>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="p-3">
-                    <i class="fas fa-tags fs-1 text-primary mb-3"></i>
-                    <h4>Ofertas Semanales</h4>
-                    <p>Descuentos especiales todas las semanas</p>
+                <div class="p-4 bg-white shadow-sm rounded-4 h-100">
+                    <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-gift fa-2x text-danger"></i>
+                    </div>
+                    <h5 class="fw-semibold text-dark">Promociones Exclusivas</h5>
+                    <p class="text-muted">Descubre descuentos y colecciones antes que nadie</p>
                 </div>
             </div>
         </div>
@@ -127,10 +143,9 @@
 <div class="container my-5">
     <div class="row">
         <div class="col-md-6 offset-md-3 text-center">
-            <h2 class="mb-4">¿Necesitas ayuda?</h2>
-            <p class="mb-4">Estamos aquí para atenderte y resolver todas tus dudas</p>
-            <button class="btn btn-primary btn-lg" onclick="location.href='@Url.Action("Privacy", "Home")'">Contáctanos</button>
-
+            <h2 class="mb-4">¿Tienes preguntas?</h2>
+            <p class="mb-4">Nuestro equipo está listo para ayudarte con tu compra</p>
+            <button class="btn btn-primary btn-lg" onclick="location.href='@Url.Action("Contact", "Home")'">Contáctanos</button>
         </div>
     </div>
 </div>
